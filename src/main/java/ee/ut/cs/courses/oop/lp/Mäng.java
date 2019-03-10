@@ -6,6 +6,12 @@ public class Mäng {
 
     private int käike = 30;
 
+    private Mängulaud mängulaud = new Mängulaud();
+
+    public Mängulaud getMängulaud() {
+        return mängulaud;
+    }
+
     public int getKäike() {
         return this.käike;
     }
@@ -19,7 +25,7 @@ public class Mäng {
     }
 
     public boolean onVõidetud() {
-        return !this.onKaotatud() && true;
+        return !this.onKaotatud() && false;
     }
 
     public static void main(String[] args) {
@@ -39,7 +45,9 @@ public class Mäng {
             Mäng mäng = new Mäng();
 
             while (!mäng.onLõppenud()) {
+                System.out.println(mäng.getMängulaud());
 
+                käsurida.nextLine();
             }
 
             if (mäng.onVõidetud()) {
