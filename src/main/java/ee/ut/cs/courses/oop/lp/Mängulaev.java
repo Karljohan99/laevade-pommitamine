@@ -6,6 +6,16 @@ public class Mängulaev {
 
     public Mängulaev(Positsioon[] positsioonid) {
         this.positsioonid = positsioonid;
+
+    }
+
+    public boolean onHävitatud() {
+        for (Positsioon positsioon : positsioonid) {
+            if (!positsioon.onHävitatud()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public Positsioon[] getPositsioonid() {
@@ -16,10 +26,19 @@ public class Mängulaev {
 
         private final int x;
         private final int y;
+        private boolean hävitatud;
 
         public Positsioon(int x, int y) {
             this.x = x;
             this.y = y;
+        }
+
+        public boolean onHävitatud() {
+            return this.hävitatud;
+        }
+
+        public void hävita() {
+            this.hävitatud = true;
         }
 
         public int getX() {
