@@ -1,11 +1,19 @@
 package ee.ut.cs.courses.oop.lp;
 
 public class Mängulaud {
-    StringBuilder sb = new StringBuilder("   A B C D E F G H I J   \n" + "10 * * * * * * * * * * 10\n" + "9  * * * * * * * * * * 9 \n" +
-            "8  * * * * * * * * * * 8 \n" + "7  * * * * * * * * * * 7 \n" + "6  * * * * * * * * * * 6 \n" +
-            "5  * * * * * * * * * * 5 \n" + "4  * * * * * * * * * * 4 \n" + "3  * * * * * * * * * * 3 \n" +
-            "2  * * * * * * * * * * 2 \n" + "1  * * * * * * * * * * 1 \n" + "   A B C D E F G H I J" );
+
     public String toString() {
+        String tähed = "  A B C D E F G H I J";
+        StringBuilder sb = new StringBuilder();
+        sb.append(tähed).append(System.lineSeparator());
+        for(int y=0; y<10; y++){
+            sb.append(y);
+            for(int x = 0; x<10; x++){
+                sb.append(" *");
+            }
+            sb.append(" ").append(y).append(System.lineSeparator());
+        }
+        sb.append(tähed);
         return sb.toString();
    }
 }
