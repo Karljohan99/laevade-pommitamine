@@ -5,27 +5,14 @@ import java.util.Scanner;
 public class Mäng {
 
     private int käike = 30;
-
     private Mängulaud mängulaud = new Mängulaud();
-
-    public Mängulaud getMängulaud() {
-        return mängulaud;
-    }
 
     public int getKäike() {
         return this.käike;
     }
 
-    public boolean onKaotatud() {
-        return this.getKäike() <= 0;
-    }
-
-    public boolean onLõppenud() {
-        return this.onKaotatud() || this.onVõidetud();
-    }
-
-    public boolean onVõidetud() {
-        return !this.onKaotatud() && false;
+    public Mängulaud getMängulaud() {
+        return this.mängulaud;
     }
 
     public static void main(String[] args) {
@@ -46,7 +33,6 @@ public class Mäng {
 
             while (!mäng.onLõppenud()) {
                 System.out.println(mäng.getMängulaud());
-
                 käsurida.nextLine();
             }
 
@@ -58,6 +44,18 @@ public class Mäng {
 
         }
 
+    }
+
+    public boolean onKaotatud() {
+        return this.getKäike() <= 0;
+    }
+
+    public boolean onLõppenud() {
+        return this.onKaotatud() || this.onVõidetud();
+    }
+
+    public boolean onVõidetud() {
+        return !this.onKaotatud() && false;
     }
 
 }
