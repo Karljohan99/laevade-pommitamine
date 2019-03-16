@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Mäng {
 
     private int käike = 30;
-    private Mängulaud mängulaud = new Mängulaud();
+    private final Mängulaud mängulaud = new Mängulaud();
 
     public int getKäike() {
         return this.käike;
@@ -25,7 +25,7 @@ public class Mäng {
 
             System.out.println("Alustame uut mängu? (Jah/ei)");
 
-            if (käsurida.nextLine().strip().toLowerCase().startsWith("e")) {
+            if (käsurida.nextLine().toLowerCase().startsWith("e")) {
                 break;
             }
 
@@ -33,7 +33,18 @@ public class Mäng {
 
             while (!mäng.onLõppenud()) {
                 System.out.println(mäng.getMängulaud());
-                käsurida.nextLine();
+                while (true) {
+                    System.out.println("Mida soovid pommitada? (A-J0-9)");
+                    try {
+                        String vastus = käsurida.nextLine().strip();
+                        int x = vastus.codePointAt(0) - 65;
+                        int y = vastus.codePointAt(1) - 48;
+                        mäng.pommita(x, y);
+                    } catch (IndexOutOfBoundsException e) {
+                        continue;
+                    }
+                    break;
+                }
             }
 
             if (mäng.onVõidetud()) {
@@ -55,7 +66,24 @@ public class Mäng {
     }
 
     public boolean onVõidetud() {
-        return !this.onKaotatud() && false;
+        for (var laev : this.getMängulaud().getLaevad()) {
+            if (!laev.onHävitatud()) {
+                return false;
+            }
+        }
+        return !this.onKaotatud();
+    }
+
+    public void pommita(int x, int y) {
+        this.käike--;
+        for (var laev : this.getMängulaud().getLaevad()) {
+            for (var positsioon : laev.getPositsioonid()) {
+                if (positsioon.kattub(x, y)) {
+                    positsioon.hävita();
+                    break;
+                }
+            }
+        }
     }
 
 }
