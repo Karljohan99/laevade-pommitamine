@@ -22,9 +22,7 @@ public class Mäng {
         Scanner käsurida = new Scanner(System.in);
 
         while (true) {
-
             System.out.println("Alustame uut mängu? (Jah/ei)");
-
             if (käsurida.nextLine().toLowerCase().startsWith("e")) {
                 break;
             }
@@ -34,6 +32,7 @@ public class Mäng {
             while (!mäng.onLõppenud()) {
                 System.out.println(mäng.getMängulaud());
                 while (true) {
+
                     System.out.println("Mida soovid pommitada? (A-J0-9)");
                     try {
                         String vastus = käsurida.nextLine().strip();
@@ -54,7 +53,6 @@ public class Mäng {
             }
 
         }
-
     }
 
     public boolean onKaotatud() {
@@ -74,6 +72,7 @@ public class Mäng {
         return !this.onKaotatud();
     }
 
+
     public void pommita(int x, int y) {
         this.käike--;
         for (var laev : this.getMängulaud().getLaevad()) {
@@ -85,5 +84,4 @@ public class Mäng {
             }
         }
     }
-
 }
