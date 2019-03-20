@@ -27,9 +27,21 @@ public class Mängulaud {
         }
     }
 
+
     public Mängulaev[] getLaevad() {
         return this.laevad;
     }
+
+    public boolean tabatud(int x, int y){
+        for(Mängulaev laev : this.getLaevad()){
+            if (laev.onHävitatud() && laev.kattub(x, y)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     @Override
     public String toString() {
@@ -39,7 +51,11 @@ public class Mängulaud {
         for (int y = 0; y < Mängulaud.SUURUS; y++) {
             sb.append(y);
             for (int x = 0; x < Mängulaud.SUURUS; x++) {
-                sb.append(" *");
+               if(tabatud(x, y)){
+                   sb.append(" x");
+               }else{
+                   sb.append(" *");
+               }
             }
             sb.append(" ").append(y).append(System.lineSeparator());
         }

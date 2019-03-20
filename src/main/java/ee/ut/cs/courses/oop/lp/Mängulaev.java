@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Mängulaev {
 
-    private final Positsioon[] positsioonid;
+    public final Positsioon[] positsioonid;
 
     public Mängulaev(int x, int y, int suurus) {
         this.positsioonid = new Positsioon[suurus];
@@ -89,6 +89,14 @@ public class Mängulaev {
 
         public int getY() {
             return this.y;
+        }
+
+        @Override
+        public String toString() {
+            return "Positsioon{" +
+                    "x=" + getX() +
+                    ", y=" + getY() +
+                    '}';
         }
 
         public void hävita() {
