@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Mängulaev {
 
-    public final Positsioon[] positsioonid;
+    private final Positsioon[] positsioonid;
 
     public Mängulaev(int x, int y, int suurus) {
         this.positsioonid = new Positsioon[suurus];
@@ -68,6 +68,14 @@ public class Mängulaev {
         return true;
     }
 
+    public boolean onTabatud(int x, int y) {
+        for (Positsioon positsioon : this.getPositsioonid()) {
+            if (positsioon.kattub(x, y) && positsioon.onHävitatud()) {
+                return true;
+            }
+        }
+        return false;
+    }
     public int suurus() {
         return this.getPositsioonid().length;
     }

@@ -34,7 +34,7 @@ public class Mängulaud {
 
     public boolean tabatud(int x, int y){
         for(Mängulaev laev : this.getLaevad()){
-            if (laev.onHävitatud() && laev.kattub(x, y)){
+            if (laev.onTabatud(x, y)) {
                 return true;
             }
         }
