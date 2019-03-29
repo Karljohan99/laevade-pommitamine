@@ -20,7 +20,7 @@ public class Mängulaud {
                 if (!laev.onMängulaual()) {
                     continue;
                 }
-                if (this.laevad.stream().anyMatch(laev::kattub)) {
+                if (this.laevad.stream().anyMatch(laev::onLähedal)) {
                     continue;
                 }
                 this.laevad.add(laev);

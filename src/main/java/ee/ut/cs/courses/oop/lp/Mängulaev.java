@@ -40,6 +40,14 @@ public class Mängulaev {
         return this.positsioonid.stream().filter(Mängupositsioon::onHävitatud).anyMatch(positsioon::equals);
     }
 
+    public boolean onLähedal(Mängulaev laev) {
+        return this.positsioonid.stream().anyMatch(laev::onLähedal);
+    }
+
+    public boolean onLähedal(Mängupositsioon positsioon) {
+        return this.positsioonid.stream().anyMatch(positsioon::onLähedal);
+    }
+
     public boolean onMängulaual() {
         return this.positsioonid.stream().allMatch(Mängupositsioon::onMängulaual);
     }

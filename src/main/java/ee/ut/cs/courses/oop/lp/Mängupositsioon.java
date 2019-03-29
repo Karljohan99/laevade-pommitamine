@@ -42,6 +42,18 @@ public class Mängupositsioon {
         return this.hävitatud;
     }
 
+    public boolean onLähedal(Mängupositsioon positsioon) {
+        return this.getX() == positsioon.getX() && this.getY() == positsioon.getY()
+                || this.getX() == positsioon.getX() && this.getY() == positsioon.getY() - 1
+                || this.getX() == positsioon.getX() && this.getY() == positsioon.getY() + 1
+                || this.getX() == positsioon.getX() - 1 && this.getY() == positsioon.getY()
+                || this.getX() == positsioon.getX() - 1 && this.getY() == positsioon.getY() - 1
+                || this.getX() == positsioon.getX() - 1 && this.getY() == positsioon.getY() + 1
+                || this.getX() == positsioon.getX() + 1 && this.getY() == positsioon.getY()
+                || this.getX() == positsioon.getX() + 1 && this.getY() == positsioon.getY() - 1
+                || this.getX() == positsioon.getX() + 1 && this.getY() == positsioon.getY() + 1;
+    }
+
     public boolean onMängulaual() {
         return this.getX() >= 0 && this.getX() < Mängulaud.SUURUS
                 && this.getY() >= 0 && this.getY() < Mängulaud.SUURUS;
