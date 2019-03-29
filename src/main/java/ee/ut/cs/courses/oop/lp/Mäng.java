@@ -41,7 +41,19 @@ public class Mäng {
                         if (!positsioon.onMängulaual()) {
                             continue;
                         }
+                        long hävitatudLaevadeArv = mäng.getMängulaud().getLaevad().stream()
+                                .filter(Mängulaev::onHävitatud)
+                                .count();
                         mäng.pommita(positsioon);
+                        if (mäng.getMängulaud().getLaevad().stream().anyMatch(laev -> laev.kattub(positsioon))) {
+                            if (mäng.getMängulaud().getLaevad().stream()
+                                    .filter(Mängulaev::onHävitatud)
+                                    .count() > hävitatudLaevadeArv) {
+                                System.out.println("Pihtas-põhjas!");
+                            } else {
+                                System.out.println("Pihtas!");
+                            }
+                        }
                     } catch (IndexOutOfBoundsException e) {
                         continue;
                     }
