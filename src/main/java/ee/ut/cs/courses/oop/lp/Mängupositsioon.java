@@ -1,5 +1,7 @@
 package ee.ut.cs.courses.oop.lp;
 
+import static java.util.Objects.hash;
+
 public class Mängupositsioon {
 
     private boolean hävitatud;
@@ -11,6 +13,14 @@ public class Mängupositsioon {
         this.y = y;
     }
 
+    @Override
+    public final boolean equals(Object objekt) {
+        if (this == objekt) return true;
+        if (!(objekt instanceof Mängupositsioon)) return false;
+        Mängupositsioon positsioon = (Mängupositsioon) objekt;
+        return this.x == positsioon.x && this.y == positsioon.y;
+    }
+
     public int getX() {
         return this.x;
     }
@@ -19,29 +29,22 @@ public class Mängupositsioon {
         return this.y;
     }
 
+    @Override
+    public final int hashCode() {
+        return hash(x, y);
+    }
+
     public void hävita() {
         this.hävitatud = true;
     }
 
-    public boolean kattub(int x, int y) {
-        return this.getX() == x && this.getY() == y;
-    }
-
-    public boolean kattub(Mängupositsioon positsioon) {
-        return positsioon != null && this.kattub(positsioon.getX(), positsioon.getY());
-    }
-
-    public boolean kattub(Mängupositsioon[] positsioonid) {
-        for (Mängupositsioon positsioon : positsioonid) {
-            if (this.kattub(positsioon)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public boolean onHävitatud() {
         return this.hävitatud;
+    }
+
+    public boolean onMängulaual() {
+        return this.getX() >= 0 && this.getX() < Mängulaud.SUURUS
+                && this.getY() >= 0 && this.getY() < Mängulaud.SUURUS;
     }
 
     @Override

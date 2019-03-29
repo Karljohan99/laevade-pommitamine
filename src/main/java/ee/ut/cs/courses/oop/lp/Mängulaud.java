@@ -1,47 +1,42 @@
 package ee.ut.cs.courses.oop.lp;
 
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Mängulaud {
 
     public static final int SUURUS = 10;
 
-    private final Mängulaev[] laevad = new Mängulaev[Mängulaud.SUURUS];
+    private final Collection<Mängulaev> laevad = new ArrayList<>();
 
     public Mängulaud() {
         int[] suurused = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
-        for (int i = 0; i < Mängulaud.SUURUS; i++) {
+        for (int i = 0; i < suurused.length; i++) {
             int suurus = suurused[i];
-            while (this.laevad[i] == null) {
+            while (this.laevad.size() == i) {
                 int x = ThreadLocalRandom.current().nextInt(Mängulaud.SUURUS);
                 int y = ThreadLocalRandom.current().nextInt(Mängulaud.SUURUS);
                 Mängulaev laev = new Mängulaev(x, y, suurus);
-                if (!laev.asubMängulaual()) {
+                if (!laev.onMängulaual()) {
                     continue;
                 }
-                if (laev.kattub(this.laevad)) {
+                if (this.laevad.stream().anyMatch(laev::kattub)) {
                     continue;
                 }
-                this.laevad[i] = laev;
+                this.laevad.add(laev);
             }
         }
     }
 
 
-    public Mängulaev[] getLaevad() {
+    public Collection<Mängulaev> getLaevad() {
         return this.laevad;
     }
 
-    public boolean tabatud(int x, int y){
-        for(Mängulaev laev : this.getLaevad()){
-            if (laev.onTabatud(x, y)) {
-                return true;
-            }
-        }
-        return false;
+    public void hävita(Mängupositsioon positsioon) {
+        //TODO: salvestada positsioon
+        this.getLaevad().forEach(laev -> laev.hävita(positsioon));
     }
-
-
 
     @Override
     public String toString() {
@@ -51,11 +46,12 @@ public class Mängulaud {
         for (int y = 0; y < Mängulaud.SUURUS; y++) {
             sb.append(y);
             for (int x = 0; x < Mängulaud.SUURUS; x++) {
-               if(tabatud(x, y)){
-                   sb.append(" x");
-               }else{
-                   sb.append(" *");
-               }
+                Mängupositsioon positsioon = new Mängupositsioon(x, y);
+                if (this.getLaevad().stream().anyMatch(laev -> laev.onHävitatud(positsioon))) {
+                    sb.append(" x");
+                } else {
+                    sb.append(" *");
+                }
             }
             sb.append(" ").append(y).append(System.lineSeparator());
         }

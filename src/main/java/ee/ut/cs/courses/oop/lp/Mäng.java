@@ -32,13 +32,16 @@ public class Mäng {
             while (!mäng.onLõppenud()) {
                 System.out.println(mäng.getMängulaud());
                 while (true) {
-
                     System.out.println("Mida soovid pommitada? (A-J0-9)");
                     try {
-                        String vastus = käsurida.nextLine().strip();
+                        String vastus = käsurida.nextLine().toUpperCase();
                         int x = vastus.codePointAt(0) - 65;
                         int y = vastus.codePointAt(1) - 48;
-                        mäng.pommita(x, y);
+                        Mängupositsioon positsioon = new Mängupositsioon(x, y);
+                        if (!positsioon.onMängulaual()) {
+                            continue;
+                        }
+                        mäng.pommita(positsioon);
                     } catch (IndexOutOfBoundsException e) {
                         continue;
                     }
@@ -72,16 +75,9 @@ public class Mäng {
         return !this.onKaotatud();
     }
 
-
-    public void pommita(int x, int y) {
+    public void pommita(Mängupositsioon positsioon) {
         this.käike--;
-        for (var laev : this.getMängulaud().getLaevad()) {
-            for (var positsioon : laev.getPositsioonid()) {
-                if (positsioon.kattub(x, y)) {
-                    positsioon.hävita();
-                    break;
-                }
-            }
-        }
+        this.getMängulaud().hävita(positsioon);
     }
+
 }
