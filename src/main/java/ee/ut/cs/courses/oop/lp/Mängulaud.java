@@ -9,6 +9,9 @@ public class Mängulaud {
 
     private final Collection<Mängulaev> laevad = new ArrayList<>();
 
+    /**
+     * Genereeritakse 10 etteantud suurustega laeva juhuslikele positsioonidele
+     */
     public Mängulaud() {
         int[] suurused = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
         for (int i = 0; i < suurused.length; i++) {
@@ -28,16 +31,31 @@ public class Mängulaud {
         }
     }
 
+    private final Set<Mängupositsioon> pommitatud = new HashSet<>();
+
+    public Set<Mängupositsioon> getPommitatud() {
+        return this.pommitatud;
+    }
+
 
     public Collection<Mängulaev> getLaevad() {
         return this.laevad;
     }
 
+    /**
+     * Antud positsioonil hävitamine ja positsiooni meelde jätimine
+     *
+     * @param positsioon Positsioon, mis hävitatakse
+     */
     public void hävita(Mängupositsioon positsioon) {
-        //TODO: salvestada positsioon
+        pommitatud.add(positsioon);
         this.getLaevad().forEach(laev -> laev.hävita(positsioon));
     }
 
+    /**
+     * Mängulaua genereerimine
+     * @return Mängulaud
+     */
     @Override
     public String toString() {
         String tähed = "  A B C D E F G H I J";
@@ -49,6 +67,8 @@ public class Mängulaud {
                 Mängupositsioon positsioon = new Mängupositsioon(x, y);
                 if (this.getLaevad().stream().anyMatch(laev -> laev.onHävitatud(positsioon))) {
                     sb.append(" x");
+                } else if (pommitatud.contains(positsioon)) {
+                    sb.append(" O");
                 } else {
                     sb.append(" *");
                 }
