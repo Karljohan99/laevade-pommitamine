@@ -1,5 +1,6 @@
 package ee.ut.cs.courses.oop.lp;
 
+import java.awt.GraphicsEnvironment;
 import java.util.Scanner;
 
 public class Mäng {
@@ -16,6 +17,11 @@ public class Mäng {
     }
 
     public static void main(String[] args) {
+
+        if (!GraphicsEnvironment.isHeadless()) {
+            Mängurakendus.main(args); // Kui on võimalik, kasutame graafilist kasutajaliidest
+            return;
+        }
 
         System.out.println("Tere tulemast mängima laevade pommitamist!");
         System.out.println("Sinu ülesandeks on 60 pommiga põhja lasta kõik 10 laeva.");
