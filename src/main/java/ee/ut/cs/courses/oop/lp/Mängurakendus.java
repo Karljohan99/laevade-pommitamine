@@ -17,7 +17,7 @@ public class Mängurakendus extends Application {
     @Override
     public void start(Stage pealava) {
         pealava.setHeight(480); // TODO: akna suurus parajaks
-        pealava.setWidth(480);
+        pealava.setWidth(600);
         pealava.setResizable(false);
         pealava.setTitle("Laevade pommitamine");
         Label sissejuhatus = new Label("Tere tulemast mängima laevade pommitamist!\n" +
