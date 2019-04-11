@@ -27,6 +27,14 @@ public class Mängulaev {
         }
     }
 
+    public int mängulaevaSuurus(Mängulaev laev) {
+        return this.positsioonid.size();
+    }
+
+    public Set<Mängupositsioon> getPositsioonid() {
+        return positsioonid;
+    }
+
     /**
      * Antud positsioonil hävitamine
      *

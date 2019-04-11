@@ -35,6 +35,7 @@ public class Mängulaud {
         return this.laevad;
     }
 
+
     /**
      * Antud positsioonil laevade hävitamine ja positsiooni meelde jätimine
      *
