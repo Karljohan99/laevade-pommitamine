@@ -1,17 +1,17 @@
 package ee.ut.cs.courses.oop.lp;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
+import javafx.scene.layout.GridPane;
 
-public class Mängulaud {
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Comparator.naturalOrder;
+
+public class Mängulaud extends GridPane {
 
     public static final int SUURUS = 10;
 
     private final List<Mängulaev> laevad = new ArrayList<>();
-    private final Set<Mängupositsioon> pommitatudPositsioonid = new HashSet<>();
 
     /**
      * Genereeritakse 10 etteantud suurustega laeva juhuslikele positsioonidele
@@ -21,39 +21,42 @@ public class Mängulaud {
         for (int i = 0; i < suurused.length; i++) {
             int suurus = suurused[i];
             while (this.laevad.size() == i) {
-                int x = ThreadLocalRandom.current().nextInt(Mängulaud.SUURUS);
-                int y = ThreadLocalRandom.current().nextInt(Mängulaud.SUURUS);
-                Mängulaev laev = new Mängulaev(x, y, suurus);
+                Mängulaev laev = new Mängulaev(suurus);
                 if (laev.onMängulaual() && this.laevad.stream().noneMatch(laev::onLähedal)) {
+                    laev.getManagedChildren().forEach(this::add);
                     this.laevad.add(laev);
                 }
             }
         }
+        for (int y = 0; y < Mängulaud.SUURUS; y++) {
+            for (int x = 0; x < Mängulaud.SUURUS; x++) {
+                Mängupositsioon positsioon = new Mängupositsioon(x, y);
+                if (!this.getManagedChildren().contains(positsioon)) {
+                    this.add(positsioon);
+                }
+            }
+        }
+        this.getManagedChildren().sort(naturalOrder());
+    }
+
+    public void add(Mängupositsioon positsioon) {
+        if (positsioon.sümbol == Mängupositsioon.Sümbol.X) {
+            positsioon = positsioon.clone();
+        }
+        super.add(positsioon, positsioon.getX(), positsioon.getY());
+    }
+
+    @Override
+    protected List<Mängupositsioon> getManagedChildren() {
+        return super.getManagedChildren();
     }
 
     public List<Mängulaev> getLaevad() {
         return this.laevad;
     }
 
-
-    /**
-     * Antud positsioonil laevade hävitamine ja positsiooni meelde jätimine
-     *
-     * @param positsioon Positsioon, mis hävitatakse
-     */
-    public void hävita(Mängupositsioon positsioon) {
-        this.pommitatudPositsioonid.add(positsioon);
-        this.getLaevad().forEach(laev -> laev.hävita(positsioon));
-    }
-
-    /**
-     * Kontrollimine, kas positsioon on juba hävitatud
-     *
-     * @param positsioon Positsioon, mida kontrollitakse
-     * @return true, kui positsioon on varem hävitatud, false, kui positsioon ei ole varem hävitatud
-     */
-    public boolean onHävitatud(Mängupositsioon positsioon) {
-        return this.pommitatudPositsioonid.contains(positsioon);
+    public List<Mängupositsioon> getPositsioonid() {
+        return this.getManagedChildren();
     }
 
     @Override
@@ -64,16 +67,9 @@ public class Mängulaud {
         for (int y = 0; y < Mängulaud.SUURUS; y++) {
             sb.append(y);
             for (int x = 0; x < Mängulaud.SUURUS; x++) {
-                Mängupositsioon positsioon = new Mängupositsioon(x, y);
-                if (this.getLaevad().stream().anyMatch(laev -> laev.onHävitatud(positsioon))) {
-                    sb.append(" X");
-                } else if (this.pommitatudPositsioonid.contains(positsioon)) {
-                    sb.append(" o");
-                } else {
-                    sb.append(" ·");
-                }
+                sb.append(" ").append(this.getPositsioonid().get(x + y * Mängulaud.SUURUS));
             }
-            sb.append(" ").append(y).append(System.lineSeparator());
+            sb.append(" ").append(y).append("    ").append(this.getLaevad().get(y)).append(System.lineSeparator());
         }
         sb.append(tähed).append(System.lineSeparator());
         return sb.toString();
