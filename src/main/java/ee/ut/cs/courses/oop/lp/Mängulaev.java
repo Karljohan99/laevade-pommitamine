@@ -1,67 +1,33 @@
 package ee.ut.cs.courses.oop.lp;
 
-import java.util.HashSet;
-import java.util.Set;
+import javafx.scene.layout.TilePane;
+
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Mängulaev {
+import static java.util.stream.Collectors.joining;
 
-    private final Set<Mängupositsioon> positsioonid = new HashSet<>();
+public class Mängulaev extends TilePane {
 
-    /**
-     * Genereeritakse antud positsiooni juurde ülejäänud positsioonid nii, et laev vastaks antud suurusele
-     *
-     * @param x      Mängulaua x koordinaat
-     * @param y      Mängulaua y koordinaat
-     * @param suurus Mängulaeva suurus
-     */
-    public Mängulaev(int x, int y, int suurus) {
+    public Mängulaev(int suurus) {
+        int x = ThreadLocalRandom.current().nextInt(Mängulaud.SUURUS);
+        int y = ThreadLocalRandom.current().nextInt(Mängulaud.SUURUS);
         if (ThreadLocalRandom.current().nextBoolean()) {
+            // Horisontaalne
             for (int i = 0; i < suurus; i++, x++) {
-                this.positsioonid.add(new Mängupositsioon(x, y)); // horisontaalne
+                this.getChildren().add(new Mängupositsioon(x, y, Mängupositsioon.Sümbol.X, null));
             }
         } else {
+            // Vertikaalne
             for (int i = 0; i < suurus; i++, y++) {
-                this.positsioonid.add(new Mängupositsioon(x, y)); // vertikaalne
+                this.getChildren().add(new Mängupositsioon(x, y, Mängupositsioon.Sümbol.X, null));
             }
         }
     }
 
-    public int mängulaevaSuurus(Mängulaev laev) {
-        return this.positsioonid.size();
-    }
-
-    public Set<Mängupositsioon> getPositsioonid() {
-        return positsioonid;
-    }
-
-    /**
-     * Antud positsioonil hävitamine
-     *
-     * @param positsioon Positsioon, mis hävitatakse
-     */
-    public void hävita(Mängupositsioon positsioon) {
-        this.positsioonid.stream().filter(positsioon::equals).forEach(Mängupositsioon::hävita);
-    }
-
-    /**
-     * Kontrollimine, kas antud laev kattub selle laevaga
-     *
-     * @param laev Laev, mille kattumist kontrollitakse
-     * @return true, kui antud laev kattub selle laevaga, false, kui antud laev ei kattu selle laevaga
-     */
-    public boolean kattub(Mängulaev laev) {
-        return this.positsioonid.stream().anyMatch(laev::kattub);
-    }
-
-    /**
-     * Kontrollimine, kas antud positsoon kattub selle laevaga
-     *
-     * @param positsioon Positsioon, mille kattumist kontrollitakse
-     * @return true, kui positsioon kattub selle laevaga, false, kui positsioon ei kattu selle laevaga
-     */
-    public boolean kattub(Mängupositsioon positsioon) {
-        return this.positsioonid.contains(positsioon);
+    @Override
+    protected List<Mängupositsioon> getManagedChildren() {
+        return super.getManagedChildren();
     }
 
     /**
@@ -70,17 +36,7 @@ public class Mängulaev {
      * @return true, kui laev on hävitatud, false, kui laev ei ole hävitatud
      */
     public boolean onHävitatud() {
-        return this.positsioonid.stream().allMatch(Mängupositsioon::onHävitatud);
-    }
-
-    /**
-     * Kontrollimine, kas laev on hävitatud antud positsioonil
-     *
-     * @param positsioon Positsioon, kus kontrollitakse, kas laev on hävitatud
-     * @return true, kui laev on hävitatud, false, kui laev ei ole hävitatud
-     */
-    public boolean onHävitatud(Mängupositsioon positsioon) {
-        return this.positsioonid.stream().filter(Mängupositsioon::onHävitatud).anyMatch(positsioon::equals);
+        return this.getManagedChildren().stream().allMatch(Mängupositsioon::onHävitatud);
     }
 
     /**
@@ -90,7 +46,7 @@ public class Mängulaev {
      * @return true, kui see laev on lähedal teisele laevale, false, kui see laev ei ole lähedal teisele laevale
      */
     public boolean onLähedal(Mängulaev laev) {
-        return this.positsioonid.stream().anyMatch(laev::onLähedal);
+        return this.getManagedChildren().stream().anyMatch(laev::onLähedal);
     }
 
     /**
@@ -100,7 +56,7 @@ public class Mängulaev {
      * @return true, kui positsioon on lähedal, false, kui positsioon ei ole lähedal
      */
     public boolean onLähedal(Mängupositsioon positsioon) {
-        return this.positsioonid.stream().anyMatch(positsioon::onLähedal);
+        return this.getManagedChildren().stream().anyMatch(positsioon::onLähedal);
     }
 
     /**
@@ -109,11 +65,12 @@ public class Mängulaev {
      * @return true, kui see laev on mängulaual, false, kui see laev ei ole mängulaual
      */
     public boolean onMängulaual() {
-        return this.positsioonid.stream().allMatch(Mängupositsioon::onMängulaual);
+        return this.getManagedChildren().stream().allMatch(Mängupositsioon::onMängulaual);
     }
 
-    public int suurus() {
-        return this.positsioonid.size();
+    @Override
+    public String toString() {
+        return this.getManagedChildren().stream().map(Mängupositsioon::toString).collect(joining(" "));
     }
 
 }
