@@ -1,91 +1,146 @@
 package ee.ut.cs.courses.oop.lp;
 
-import java.awt.GraphicsEnvironment;
+import javafx.application.Platform;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+
+import java.awt.*;
 import java.util.Scanner;
 
-public class Mäng {
+public class Mäng extends Pane {
 
-    private int pommideArv = 60;
     private final Mängulaud mängulaud = new Mängulaud();
+
+    public Mäng() {
+        VBox lõpuPaneel = new VBox();
+        HBox nimeväli = new HBox();
+        lõpuPaneel.setSpacing(50);
+        lõpuPaneel.setPrefWidth(720);
+        lõpuPaneel.setPrefHeight(480);
+        lõpuPaneel.setAlignment(Pos.CENTER);
+        nimeväli.setAlignment(Pos.CENTER);
+        Label võit = new Label("Sa võitsid"); // TODO: Erinev lõpp kaotuse puhul
+        võit.setFont(new Font("Futura", 48));
+        javafx.scene.control.Button uuesti = new javafx.scene.control.Button("Mängi uuesti!");
+        uuesti.setStyle("-fx-background-color: white;-fx-border-color: black; -fx-font-size: 2em; ");
+        javafx.scene.control.TextField tekst = new TextField();
+        Label nimi = new Label("Sisesta kasutajanimi: ");
+        nimi.setFont(new Font("Futura", 20));
+        uuesti.setOnMouseEntered(e -> uuesti.setStyle("-fx-background-color: grey;-fx-border-color: black; -fx-font-size: 2em; "));
+        uuesti.setOnMouseExited(e -> uuesti.setStyle("-fx-background-color: white;-fx-border-color: black; -fx-font-size: 2em; "));
+        uuesti.setOnAction(e -> lõpuPaneel.getScene().setRoot(new Mäng()));
+        nimeväli.getChildren().addAll(nimi, tekst);
+        lõpuPaneel.getChildren().addAll(võit, new Edetabel(), uuesti);
+
+
+        VBox laevadePaneel = new VBox();
+        laevadePaneel.setSpacing(6);
+        Label pommid = new Label("Pomme alles: " + this.pommideArv());
+        pommid.setFont(new Font("Futura", 20));
+
+        for (Mängulaev laev : this.getMängulaud().getLaevad()) {
+            for (Mängupositsioon nupp : laev.getManagedChildren()) {
+                nupp.setPrefWidth(30);
+                nupp.setPrefHeight(30);
+            }
+            laevadePaneel.getChildren().add(laev);
+        }
+
+
+        this.getMängulaud().getPositsioonid().forEach(nupp -> {
+            nupp.setPrefWidth(36);
+            nupp.setPrefHeight(36);
+
+            nupp.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+                // this.getScene().setRoot(lõpuPaneel); // testimiseks
+                if (!nupp.onHävitatud()) {
+                    nupp.hävita();
+                    pommid.setText("Pomme alles: " + this.pommideArv());
+                    if (this.onLõppenud()) {
+                        this.getScene().setRoot(lõpuPaneel);
+                    }
+                }
+            });
+
+        });
+
+
+        this.getMängulaud().setLayoutX(60);
+        this.getMängulaud().setLayoutY(30);
+        laevadePaneel.setLayoutX(480);
+        laevadePaneel.setLayoutY(30);
+        this.getChildren().addAll(pommid, this.getMängulaud(), laevadePaneel);
+    }
 
     public Mängulaud getMängulaud() {
         return this.mängulaud;
     }
 
-    public int getPommideArv() {
-        return this.pommideArv;
+    public int hävitatudLaevadeArv() {
+        return (int) this.getMängulaud().getLaevad().stream()
+                .filter(Mängulaev::onHävitatud)
+                .count();
     }
 
     public static void main(String[] args) {
-
         if (!GraphicsEnvironment.isHeadless()) {
             Mängurakendus.main(args); // Kui on võimalik, kasutame graafilist kasutajaliidest
             return;
+        } else {
+            Platform.startup(() -> {
+            });
         }
-
         System.out.println("Tere tulemast mängima laevade pommitamist!");
         System.out.println("Sinu ülesandeks on 60 pommiga põhja lasta kõik 10 laeva.");
         System.out.println("Laevade vahel on vähemalt üks tühi ruut.");
-
-        Scanner käsurida = new Scanner(System.in);
-
-        while (true) {
-            System.out.println();
-            System.out.println("Alustame uut mängu? (Jah/ei)");
-            if (käsurida.nextLine().toLowerCase().startsWith("e")) {
-                break;
-            }
-            Mäng mäng = new Mäng();
-            System.out.println(mäng.getMängulaud());
-            while (!mäng.onLõppenud()) {
-                long hävitatudLaevadeArv = mäng.getMängulaud().getLaevad().stream()
-                        .filter(Mängulaev::onHävitatud)
-                        .count();
-                System.out.println("Pomme alles: " + mäng.getPommideArv());
-                System.out.println("Laevu hävitatud: " + hävitatudLaevadeArv + "/10");
-                while (true) {
-                    System.out.println("Mida soovid pommitada? (A-J ja 0-9)");
-                    try {
-                        String vastus = käsurida.nextLine().toUpperCase();
-                        int x = vastus.codePointAt(0) - 65; // tähed algavad kohalt 65
-                        int y = vastus.codePointAt(1) - 48; // numbrid algavad kohalt 48
-                        Mängupositsioon positsioon = new Mängupositsioon(x, y);
-                        if (!positsioon.onMängulaual()) {
-                            System.out.println("Sisestatud positsioon ei asu mängulaual!");
-                            continue;
-                        }
-                        if (mäng.getMängulaud().onHävitatud(positsioon)) {
-                            System.out.println("Seda positsiooni oled juba pommitanud!");
-                            continue;
-                        }
-                        mäng.pommita(positsioon);
-                        System.out.println(mäng.getMängulaud());
-                        if (mäng.getMängulaud().getLaevad().stream().anyMatch(laev -> laev.kattub(positsioon))) {
-                            if (mäng.getMängulaud().getLaevad().stream()
-                                    .filter(Mängulaev::onHävitatud)
-                                    .count() > hävitatudLaevadeArv) {
-                                System.out.println("Pihtas-põhjas!");
-                            } else {
-                                System.out.println("Pihtas!");
-                            }
-                        } else {
-                            System.out.println("Möödas!");
-                        }
-                        System.out.println();
-                    } catch (IndexOutOfBoundsException e) {
-                        System.out.println("Sisesta mängulaua koordinaat, näiteks C4");
-                        continue;
-                    }
+        try (Scanner käsurida = new Scanner(System.in)) {
+            while (true) {
+                System.out.println();
+                System.out.println("Alustame uut mängu? (Jah/ei)");
+                if (käsurida.nextLine().toLowerCase().startsWith("e")) {
                     break;
                 }
+                Mäng mäng = new Mäng();
+                while (!mäng.onLõppenud()) {
+                    System.out.println(mäng);
+                    while (true) {
+                        System.out.println("Mida soovid pommitada? (A-J ja 0-9)");
+                        try {
+                            String vastus = käsurida.nextLine().toUpperCase();
+                            int x = vastus.codePointAt(0) - 65; // tähed algavad kohalt 65
+                            int y = vastus.codePointAt(1) - 48; // numbrid algavad kohalt 48
+                            if (!Mängupositsioon.onMängulaual(x, y)) {
+                                System.out.println("Sisestatud positsioon ei asu mängulaual!");
+                                continue;
+                            }
+                            Mängupositsioon positsioon = mäng.getMängulaud().getManagedChildren().get(x + y * Mängulaud.SUURUS);
+                            if (positsioon.onHävitatud()) {
+                                System.out.println("Seda positsiooni oled juba pommitanud!");
+                                continue;
+                            } else {
+                                positsioon.hävita();
+                            }
+                            System.out.println();
+                        } catch (IndexOutOfBoundsException e) {
+                            System.out.println("Sisesta mängulaua koordinaat, näiteks C4");
+                            continue;
+                        }
+                        break;
+                    }
+                }
+                System.out.println(mäng);
+                if (mäng.onVõidetud()) {
+                    System.out.println("Sa võitsid!");
+                } else {
+                    System.out.println("Sa kaotasid!");
+                }
             }
-
-            if (mäng.onVõidetud()) {
-                System.out.println("Sa võitsid!");
-            } else {
-                System.out.println("Sa kaotasid!");
-            }
-
         }
     }
 
@@ -95,7 +150,7 @@ public class Mäng {
      * @return true, kui pommid on otsas, false, kui pommid ei ole otsas
      */
     public boolean onKaotatud() {
-        return this.getPommideArv() <= 0;
+        return this.pommideArv() <= 0;
     }
 
     /**
@@ -116,14 +171,18 @@ public class Mäng {
         return this.getMängulaud().getLaevad().stream().allMatch(Mängulaev::onHävitatud) && !this.onKaotatud();
     }
 
-    /**
-     * Kasutaja poolt sisestatud positsiooni pommitamine ja pommide vähendamine ühe võrra
-     *
-     * @param positsioon Kasutaja poolt sisestatud positsioon
-     */
-    public void pommita(Mängupositsioon positsioon) {
-        this.pommideArv--;
-        this.getMängulaud().hävita(positsioon);
+    public long pommideArv() {
+        return 60 - this.mängulaud.getPositsioonid().stream().filter(Mängupositsioon::onHävitatud).count();
+    }
+
+    public int skoor() {
+        return 0; // TODO: matemaatika
+    }
+
+    @Override
+    public String toString() {
+        return this.getMängulaud().toString() + System.lineSeparator()
+                + "Pomme alles: " + this.pommideArv() + System.lineSeparator();
     }
 
 }
