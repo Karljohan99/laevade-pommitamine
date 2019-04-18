@@ -18,25 +18,6 @@ public class Mäng extends Pane {
     private final Mängulaud mängulaud = new Mängulaud();
 
     public Mäng() {
-        VBox lõpuPaneel = new VBox();
-        HBox nimeväli = new HBox();
-        lõpuPaneel.setSpacing(50);
-        lõpuPaneel.setPrefWidth(720);
-        lõpuPaneel.setPrefHeight(480);
-        lõpuPaneel.setAlignment(Pos.CENTER);
-        nimeväli.setAlignment(Pos.CENTER);
-        Label võit = new Label("Sa võitsid"); // TODO: Erinev lõpp kaotuse puhul
-        võit.setFont(new Font("Futura", 48));
-        javafx.scene.control.Button uuesti = new javafx.scene.control.Button("Mängi uuesti!");
-        uuesti.setStyle("-fx-background-color: white;-fx-border-color: black; -fx-font-size: 2em; ");
-        javafx.scene.control.TextField tekst = new TextField();
-        Label nimi = new Label("Sisesta kasutajanimi: ");
-        nimi.setFont(new Font("Futura", 20));
-        uuesti.setOnMouseEntered(e -> uuesti.setStyle("-fx-background-color: grey;-fx-border-color: black; -fx-font-size: 2em; "));
-        uuesti.setOnMouseExited(e -> uuesti.setStyle("-fx-background-color: white;-fx-border-color: black; -fx-font-size: 2em; "));
-        uuesti.setOnAction(e -> lõpuPaneel.getScene().setRoot(new Mäng()));
-        nimeväli.getChildren().addAll(nimi, tekst);
-        lõpuPaneel.getChildren().addAll(võit, new Edetabel(), uuesti);
 
 
         VBox laevadePaneel = new VBox();
@@ -58,12 +39,12 @@ public class Mäng extends Pane {
             nupp.setPrefHeight(36);
 
             nupp.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
-                // this.getScene().setRoot(lõpuPaneel); // testimiseks
+                // this.getScene().setRoot(new Mängulõpp()); // testimiseks
                 if (!nupp.onHävitatud()) {
                     nupp.hävita();
                     pommid.setText("Pomme alles: " + this.pommideArv());
                     if (this.onLõppenud()) {
-                        this.getScene().setRoot(lõpuPaneel);
+                        this.getScene().setRoot(new Mängulõpp());
                     }
                 }
             });
@@ -183,6 +164,33 @@ public class Mäng extends Pane {
     public String toString() {
         return this.getMängulaud().toString() + System.lineSeparator()
                 + "Pomme alles: " + this.pommideArv() + System.lineSeparator();
+    }
+
+    class Mängulõpp extends VBox {
+        public Mängulõpp() {
+            HBox nimeväli = new HBox();
+            this.setSpacing(50);
+            this.setPrefWidth(720);
+            this.setPrefHeight(480);
+            this.setAlignment(Pos.CENTER);
+            nimeväli.setAlignment(Pos.CENTER);
+            Label võit = new Label("Sa võitsid");
+            if (Mäng.this.onKaotatud()) {
+                võit.setText("Sa kaotasid");
+            }
+            võit.setFont(new Font("Futura", 48));
+            javafx.scene.control.Button uuesti = new javafx.scene.control.Button("Mängi uuesti!");
+            uuesti.setStyle("-fx-background-color: white;-fx-border-color: black; -fx-font-size: 2em; ");
+            javafx.scene.control.TextField tekst = new TextField();
+            Label nimi = new Label("Sisesta kasutajanimi: ");
+            nimi.setFont(new Font("Futura", 20));
+            uuesti.setOnMouseEntered(e -> uuesti.setStyle("-fx-background-color: grey;-fx-border-color: black; -fx-font-size: 2em; "));
+            uuesti.setOnMouseExited(e -> uuesti.setStyle("-fx-background-color: white;-fx-border-color: black; -fx-font-size: 2em; "));
+            uuesti.setOnAction(e -> this.getScene().setRoot(new Mäng()));
+            nimeväli.getChildren().addAll(nimi, tekst);
+            Edetabel edetabel = new Edetabel();
+            this.getChildren().addAll(võit, edetabel, uuesti);
+        }
     }
 
 }
