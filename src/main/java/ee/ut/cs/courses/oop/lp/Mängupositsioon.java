@@ -1,16 +1,64 @@
 package ee.ut.cs.courses.oop.lp;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+
+import static java.lang.Integer.compare;
 import static java.util.Objects.hash;
 
-public class Mängupositsioon {
+public class Mängupositsioon extends Button implements Comparable<Mängupositsioon> {
 
-    private boolean hävitatud;
+    protected static final Border ALGNE_RAAM = new Border(new BorderStroke(Color.BLACK,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
+    protected static final Background ALGNE_TAUST = new Background(new BackgroundFill(Color.WHITE,
+            CornerRadii.EMPTY, Insets.EMPTY));
+
+    protected final BooleanProperty hävitatud;
+    protected final Sümbol sümbol;
     private final int x;
     private final int y;
 
     public Mängupositsioon(int x, int y) {
+        this(x, y, Sümbol.O);
+    }
+
+    public Mängupositsioon(int x, int y, Sümbol sümbol) {
+        this(x, y, sümbol, new SimpleBooleanProperty());
+    }
+
+    public Mängupositsioon(int x, int y, Sümbol sümbol, String text) {
+        this(x, y, sümbol, text, new SimpleBooleanProperty());
+    }
+
+    private Mängupositsioon(int x, int y, Sümbol sümbol, BooleanProperty hävitatud) {
+        this(x, y, sümbol, Character.toString(x + 65) + y, hävitatud);
+    }
+
+    private Mängupositsioon(int x, int y, Sümbol sümbol, String text, BooleanProperty hävitatud) {
+        super(text);
+        this.setBackground(ALGNE_TAUST);
+        this.setBorder(ALGNE_RAAM);
+        this.setDisabled(text == null);
+        this.sümbol = sümbol;
+        this.hävitatud = hävitatud;
+        this.hävitatud.addListener(v -> this.setBackground(this.sümbol.taust));
         this.x = x;
         this.y = y;
+    }
+
+    @Override
+    protected Mängupositsioon clone() {
+        return new Mängupositsioon(this.x, this.y, this.sümbol, this.hävitatud);
+    }
+
+    @Override
+    public final int compareTo(Mängupositsioon positsioon) {
+        return compare(this.getX() + this.getY() * Mängulaud.SUURUS,
+                positsioon.getX() + positsioon.getY() * Mängulaud.SUURUS);
     }
 
     @Override
@@ -38,7 +86,7 @@ public class Mängupositsioon {
      * Positsiooni hävitamine
      */
     public void hävita() {
-        this.hävitatud = true;
+        this.hävitatud.set(true);
     }
 
     /**
@@ -47,7 +95,7 @@ public class Mängupositsioon {
      * @return true, kui positsioon on hävitatud, false, kui positsioon ei ole hävitatud
      */
     public boolean onHävitatud() {
-        return this.hävitatud;
+        return this.hävitatud.get();
     }
 
     /**
@@ -74,13 +122,36 @@ public class Mängupositsioon {
      * @return true, kui on mängulaual, false, kui ei ole mängulaual
      */
     public boolean onMängulaual() {
-        return this.getX() >= 0 && this.getX() < Mängulaud.SUURUS
-                && this.getY() >= 0 && this.getY() < Mängulaud.SUURUS;
+        return onMängulaual(this.getX(), this.getY());
+    }
+
+    public static boolean onMängulaual(int x, int y) {
+        return x >= 0 && x < Mängulaud.SUURUS && y >= 0 && y < Mängulaud.SUURUS;
     }
 
     @Override
     public String toString() {
-        return "(" + this.getX() + ", " + this.getY() + ")";
+        return this.onHävitatud() ? this.sümbol.toString() : "·";
+    }
+
+    public enum Sümbol {
+
+        X("X", new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY))),
+        O("o", new Background(new BackgroundFill(Color.BLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+
+        private final String sümbol;
+        private final Background taust;
+
+        Sümbol(String sümbol, Background taust) {
+            this.sümbol = sümbol;
+            this.taust = taust;
+        }
+
+        @Override
+        public String toString() {
+            return this.sümbol;
+        }
+
     }
 
 }
