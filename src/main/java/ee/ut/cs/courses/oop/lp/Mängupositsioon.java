@@ -16,6 +16,8 @@ public class Mängupositsioon extends Button implements Comparable<Mängupositsi
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
     protected static final Background ALGNE_TAUST = new Background(new BackgroundFill(Color.WHITE,
             CornerRadii.EMPTY, Insets.EMPTY));
+    protected static final Background HIIRE_TAUST = new Background(new BackgroundFill(Color.GREY,
+            CornerRadii.EMPTY, Insets.EMPTY));
 
     protected final BooleanProperty hävitatud;
     protected final Sümbol sümbol;
@@ -48,6 +50,18 @@ public class Mängupositsioon extends Button implements Comparable<Mängupositsi
         this.hävitatud.addListener(v -> this.setBackground(this.sümbol.taust));
         this.x = x;
         this.y = y;
+    }
+
+    public void hiir_sisenes() {
+        if (this.getBackground() == ALGNE_TAUST) {
+            this.setBackground(HIIRE_TAUST);
+        }
+    }
+
+    public void hiir_väljus() {
+        if (this.getBackground() == HIIRE_TAUST) {
+            this.setBackground(ALGNE_TAUST);
+        }
     }
 
     @Override

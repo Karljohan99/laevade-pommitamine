@@ -39,7 +39,7 @@ public class Mäng extends Pane {
             nupp.setPrefHeight(36);
 
             nupp.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
-                // this.getScene().setRoot(new Mängulõpp()); // testimiseks
+                //this.getScene().setRoot(new Mängulõpp()); // testimiseks
                 if (!nupp.onHävitatud()) {
                     nupp.hävita();
                     pommid.setText("Pomme alles: " + this.pommideArv());
@@ -49,6 +49,9 @@ public class Mäng extends Pane {
                 }
             });
 
+            nupp.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> nupp.hiir_sisenes());
+            nupp.addEventHandler(MouseEvent.MOUSE_EXITED, e -> nupp.hiir_väljus());
+
         });
 
 
@@ -56,6 +59,7 @@ public class Mäng extends Pane {
         this.getMängulaud().setLayoutY(30);
         laevadePaneel.setLayoutX(480);
         laevadePaneel.setLayoutY(30);
+        pommid.setLayoutX(60);
         this.getChildren().addAll(pommid, this.getMängulaud(), laevadePaneel);
     }
 
@@ -157,8 +161,9 @@ public class Mäng extends Pane {
     }
 
     public int skoor() {
-        return 0; // TODO: matemaatika
+        return (int) Math.round(Math.pow(2.5 * pommideArv(), 3));
     }
+
 
     @Override
     public String toString() {
@@ -169,27 +174,40 @@ public class Mäng extends Pane {
     class Mängulõpp extends VBox {
         public Mängulõpp() {
             HBox nimeväli = new HBox();
-            this.setSpacing(50);
+            nimeväli.setSpacing(10);
+            this.setSpacing(8);
             this.setPrefWidth(720);
             this.setPrefHeight(480);
             this.setAlignment(Pos.CENTER);
             nimeväli.setAlignment(Pos.CENTER);
-            Label võit = new Label("Sa võitsid");
+            Label võit = new Label("Sa võitsid!");
             if (Mäng.this.onKaotatud()) {
-                võit.setText("Sa kaotasid");
+                võit.setText("Sa kaotasid!");
             }
-            võit.setFont(new Font("Futura", 48));
+            võit.setFont(new Font("Futura", 36));
             javafx.scene.control.Button uuesti = new javafx.scene.control.Button("Mängi uuesti!");
             uuesti.setStyle("-fx-background-color: white;-fx-border-color: black; -fx-font-size: 2em; ");
             javafx.scene.control.TextField tekst = new TextField();
-            Label nimi = new Label("Sisesta kasutajanimi: ");
+            Label nimi = new Label("Pane enda nimi edetabelisse: ");
             nimi.setFont(new Font("Futura", 20));
+            Label skoor = new Label("Sinu skoor: " + skoor());
+            skoor.setFont(new Font("Futura", 24));
+            javafx.scene.control.Button OK_nupp = new javafx.scene.control.Button("OK!");
+            OK_nupp.setStyle("-fx-background-color: white;-fx-border-color: black;");
+            OK_nupp.setOnMouseEntered(e -> OK_nupp.setStyle("-fx-background-color: grey;-fx-border-color: black;"));
+            OK_nupp.setOnMouseExited(e -> OK_nupp.setStyle("-fx-background-color: white;-fx-border-color: black;"));
             uuesti.setOnMouseEntered(e -> uuesti.setStyle("-fx-background-color: grey;-fx-border-color: black; -fx-font-size: 2em; "));
             uuesti.setOnMouseExited(e -> uuesti.setStyle("-fx-background-color: white;-fx-border-color: black; -fx-font-size: 2em; "));
             uuesti.setOnAction(e -> this.getScene().setRoot(new Mäng()));
-            nimeväli.getChildren().addAll(nimi, tekst);
+            nimeväli.getChildren().addAll(nimi, tekst, OK_nupp);
             Edetabel edetabel = new Edetabel();
-            this.getChildren().addAll(võit, edetabel, uuesti);
+            edetabel.setStyle("-fx-background-color: antiquewhite;-fx-border-color: black;");
+            if (Mäng.this.onKaotatud()) {
+                this.getChildren().addAll(võit, skoor, edetabel, uuesti);
+            } else {
+                this.getChildren().addAll(võit, skoor, edetabel, nimeväli, uuesti);
+            }
+
         }
     }
 
