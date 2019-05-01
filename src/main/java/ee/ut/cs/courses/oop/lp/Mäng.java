@@ -10,7 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-import java.awt.*;
+import java.util.List;
 import java.util.Scanner;
 
 public class Mäng extends Pane {
@@ -74,13 +74,14 @@ public class Mäng extends Pane {
     }
 
     public static void main(String[] args) {
-        if (!GraphicsEnvironment.isHeadless()) {
-            Mängurakendus.main(args); // Kui on võimalik, kasutame graafilist kasutajaliidest
+        if (!List.of(args).contains("tekst")) {
+            Mängurakendus.main(args);
             return;
-        } else {
-            Platform.startup(() -> {
-            });
         }
+
+        Platform.startup(() -> {
+        });
+
         System.out.println("Tere tulemast mängima laevade pommitamist!");
         System.out.println("Sinu ülesandeks on 60 pommiga põhja lasta kõik 10 laeva.");
         System.out.println("Laevade vahel on vähemalt üks tühi ruut.");
