@@ -136,11 +136,7 @@ public class Mängupositsioon extends Button implements Comparable<Mängupositsi
      * @return true, kui on mängulaual, false, kui ei ole mängulaual
      */
     public boolean onMängulaual() {
-        return onMängulaual(this.getX(), this.getY());
-    }
-
-    public static boolean onMängulaual(int x, int y) {
-        return x >= 0 && x < Mängulaud.SUURUS && y >= 0 && y < Mängulaud.SUURUS;
+        return this.getX() >= 0 && this.getX() < Mängulaud.SUURUS && this.getY() >= 0 && this.getY() < Mängulaud.SUURUS;
     }
 
     @Override

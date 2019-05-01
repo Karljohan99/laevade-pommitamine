@@ -101,11 +101,7 @@ public class Mäng extends Pane {
                             String vastus = käsurida.nextLine().toUpperCase();
                             int x = vastus.codePointAt(0) - 65; // tähed algavad kohalt 65
                             int y = vastus.codePointAt(1) - 48; // numbrid algavad kohalt 48
-                            if (!Mängupositsioon.onMängulaual(x, y)) {
-                                System.out.println("Sisestatud positsioon ei asu mängulaual!");
-                                continue;
-                            }
-                            Mängupositsioon positsioon = mäng.getMängulaud().getManagedChildren().get(x + y * Mängulaud.SUURUS);
+                            Mängupositsioon positsioon = mäng.getMängulaud().getPositsioon(x, y);
                             if (positsioon.onHävitatud()) {
                                 System.out.println("Seda positsiooni oled juba pommitanud!");
                                 continue;
@@ -113,7 +109,10 @@ public class Mäng extends Pane {
                                 positsioon.hävita();
                             }
                             System.out.println();
-                        } catch (IndexOutOfBoundsException e) {
+                        } catch (IllegalArgumentException erind) {
+                            System.out.println(erind.getMessage());
+                            continue;
+                        } catch (IndexOutOfBoundsException erind) {
                             System.out.println("Sisesta mängulaua koordinaat, näiteks C4");
                             continue;
                         }

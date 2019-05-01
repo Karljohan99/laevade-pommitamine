@@ -59,6 +59,13 @@ public class Mängulaud extends GridPane {
         return this.getManagedChildren();
     }
 
+    public Mängupositsioon getPositsioon(int x, int y) {
+        if (x < 0 || x >= Mängulaud.SUURUS || y < 0 || y >= Mängulaud.SUURUS) {
+            throw new IllegalArgumentException("Sisestatud positsioon ei asu mängulaual!");
+        }
+        return this.getManagedChildren().get(x + y * Mängulaud.SUURUS);
+    }
+
     @Override
     public String toString() {
         String tähed = "  A B C D E F G H I J";
@@ -67,7 +74,7 @@ public class Mängulaud extends GridPane {
         for (int y = 0; y < Mängulaud.SUURUS; y++) {
             sb.append(y);
             for (int x = 0; x < Mängulaud.SUURUS; x++) {
-                sb.append(" ").append(this.getPositsioonid().get(x + y * Mängulaud.SUURUS));
+                sb.append(" ").append(this.getPositsioon(x, y));
             }
             sb.append(" ").append(y).append("    ").append(this.getLaevad().get(y)).append(System.lineSeparator());
         }
