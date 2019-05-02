@@ -1,23 +1,22 @@
 package ee.ut.cs.courses.oop.lp;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import static java.lang.Integer.compare;
 import static java.util.Objects.hash;
 
-public class Mängupositsioon extends Button implements Comparable<Mängupositsioon> {
+public class Mängupositsioon extends Mängunupp implements Comparable<Mängupositsioon> {
 
-    protected static final Border ALGNE_RAAM = new Border(new BorderStroke(Color.BLACK,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
-    protected static final Background ALGNE_TAUST = new Background(new BackgroundFill(Color.WHITE,
-            CornerRadii.EMPTY, Insets.EMPTY));
-    protected static final Background HIIRE_TAUST = new Background(new BackgroundFill(Color.GREY,
-            CornerRadii.EMPTY, Insets.EMPTY));
+    protected static final Border FOOKUSES_RAAM = new Border(new BorderStroke(Color.BLACK,
+            BorderStrokeStyle.DASHED, CornerRadii.EMPTY, new BorderWidths(2, 2, 2, 2)));
+
+    private static ObjectProperty<Mängupositsioon> eelmine = new SimpleObjectProperty<>();
 
     protected final BooleanProperty hävitatud;
     protected final Sümbol sümbol;
@@ -32,19 +31,16 @@ public class Mängupositsioon extends Button implements Comparable<Mängupositsi
         this(x, y, sümbol, new SimpleBooleanProperty());
     }
 
-    public Mängupositsioon(int x, int y, Sümbol sümbol, String text) {
-        this(x, y, sümbol, text, new SimpleBooleanProperty());
+    public Mängupositsioon(int x, int y, Sümbol sümbol, String tekst) {
+        this(x, y, sümbol, tekst, new SimpleBooleanProperty());
     }
 
     private Mängupositsioon(int x, int y, Sümbol sümbol, BooleanProperty hävitatud) {
         this(x, y, sümbol, Character.toString(x + 65) + y, hävitatud);
     }
 
-    private Mängupositsioon(int x, int y, Sümbol sümbol, String text, BooleanProperty hävitatud) {
-        super(text);
-        this.setBackground(ALGNE_TAUST);
-        this.setBorder(ALGNE_RAAM);
-        this.setDisabled(text == null);
+    private Mängupositsioon(int x, int y, Sümbol sümbol, String tekst, BooleanProperty hävitatud) {
+        super(tekst);
         this.sümbol = sümbol;
         this.hävitatud = hävitatud;
         this.hävitatud.addListener(v -> this.setBackground(this.sümbol.taust));
@@ -52,21 +48,11 @@ public class Mängupositsioon extends Button implements Comparable<Mängupositsi
         this.y = y;
     }
 
-    public void hiir_sisenes() {
-        if (this.getBackground() == ALGNE_TAUST) {
-            this.setBackground(HIIRE_TAUST);
-        }
-    }
-
-    public void hiir_väljus() {
-        if (this.getBackground() == HIIRE_TAUST) {
-            this.setBackground(ALGNE_TAUST);
-        }
-    }
-
     @Override
     protected Mängupositsioon clone() {
-        return new Mängupositsioon(this.x, this.y, this.sümbol, this.hävitatud);
+        Mängupositsioon uus = new Mängupositsioon(this.x, this.y, this.sümbol, this.hävitatud);
+        this.borderProperty().bind(uus.borderProperty());
+        return uus;
     }
 
     @Override
@@ -101,6 +87,12 @@ public class Mängupositsioon extends Button implements Comparable<Mängupositsi
      */
     public void hävita() {
         this.hävitatud.set(true);
+        if (eelmine.isNotNull().getValue()) {
+            eelmine.getValue().setBorder(ALGNE_RAAM);
+        }
+        eelmine.setValue(this);
+        this.setFocusTraversable(false);
+        this.setBorder(FOOKUSES_RAAM);
     }
 
     /**

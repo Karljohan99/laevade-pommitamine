@@ -23,7 +23,9 @@ public class Mängulaud extends GridPane {
             while (this.laevad.size() == i) {
                 Mängulaev laev = new Mängulaev(suurus);
                 if (laev.onMängulaual() && this.laevad.stream().noneMatch(laev::onLähedal)) {
-                    laev.getManagedChildren().forEach(this::add);
+                    laev.getManagedChildren().stream()
+                            .map(Mängupositsioon::clone)
+                            .forEach(this.getManagedChildren()::add);
                     this.laevad.add(laev);
                 }
             }
@@ -32,18 +34,12 @@ public class Mängulaud extends GridPane {
             for (int x = 0; x < Mängulaud.SUURUS; x++) {
                 Mängupositsioon positsioon = new Mängupositsioon(x, y);
                 if (!this.getManagedChildren().contains(positsioon)) {
-                    this.add(positsioon);
+                    this.getManagedChildren().add(positsioon);
                 }
             }
         }
         this.getManagedChildren().sort(naturalOrder());
-    }
-
-    public void add(Mängupositsioon positsioon) {
-        if (positsioon.sümbol == Mängupositsioon.Sümbol.X) {
-            positsioon = positsioon.clone();
-        }
-        super.add(positsioon, positsioon.getX(), positsioon.getY());
+        this.getManagedChildren().forEach(positsioon -> this.add(positsioon, positsioon.getX(), positsioon.getY()));
     }
 
     @Override
@@ -53,10 +49,6 @@ public class Mängulaud extends GridPane {
 
     public List<Mängulaev> getLaevad() {
         return this.laevad;
-    }
-
-    public List<Mängupositsioon> getPositsioonid() {
-        return this.getManagedChildren();
     }
 
     public Mängupositsioon getPositsioon(int x, int y) {
