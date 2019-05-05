@@ -18,7 +18,7 @@ public class Mängupositsioon extends Mängunupp implements Comparable<Mängupos
 
     private static ObjectProperty<Mängupositsioon> eelmine = new SimpleObjectProperty<>();
 
-    protected final BooleanProperty hävitatud;
+    protected final BooleanProperty hävitatud = new SimpleBooleanProperty();
     protected final Sümbol sümbol;
     private final int x;
     private final int y;
@@ -28,21 +28,12 @@ public class Mängupositsioon extends Mängunupp implements Comparable<Mängupos
     }
 
     public Mängupositsioon(int x, int y, Sümbol sümbol) {
-        this(x, y, sümbol, new SimpleBooleanProperty());
+        this(x, y, sümbol, Character.toString(x + 65) + y);
     }
 
     public Mängupositsioon(int x, int y, Sümbol sümbol, String tekst) {
-        this(x, y, sümbol, tekst, new SimpleBooleanProperty());
-    }
-
-    private Mängupositsioon(int x, int y, Sümbol sümbol, BooleanProperty hävitatud) {
-        this(x, y, sümbol, Character.toString(x + 65) + y, hävitatud);
-    }
-
-    private Mängupositsioon(int x, int y, Sümbol sümbol, String tekst, BooleanProperty hävitatud) {
         super(tekst);
         this.sümbol = sümbol;
-        this.hävitatud = hävitatud;
         this.hävitatud.addListener(v -> this.setBackground(this.sümbol.taust));
         this.x = x;
         this.y = y;
@@ -50,8 +41,9 @@ public class Mängupositsioon extends Mängunupp implements Comparable<Mängupos
 
     @Override
     protected Mängupositsioon clone() {
-        Mängupositsioon uus = new Mängupositsioon(this.x, this.y, this.sümbol, this.hävitatud);
+        Mängupositsioon uus = new Mängupositsioon(this.x, this.y, this.sümbol);
         this.borderProperty().bind(uus.borderProperty());
+        this.hävitatud.bindBidirectional(uus.hävitatud);
         return uus;
     }
 

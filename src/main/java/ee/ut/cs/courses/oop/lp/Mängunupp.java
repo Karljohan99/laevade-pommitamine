@@ -17,10 +17,8 @@ public class Mängunupp extends Button {
 
     public Mängunupp(String tekst) {
         super(tekst);
-        this.setBackground(ALGNE_TAUST);
-        this.setBorder(ALGNE_RAAM);
-        this.setDisable(tekst == null);
         this.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> this.requestFocus());
+        this.addEventHandler(MouseEvent.MOUSE_EXITED, e -> this.getParent().requestFocus());
         this.focusedProperty().addListener((parameeter, enne, pärast) -> {
             if (this.isFocusTraversable()) {
                 if (pärast) {
@@ -31,6 +29,9 @@ public class Mängunupp extends Button {
                 }
             }
         });
+        this.setBackground(ALGNE_TAUST);
+        this.setBorder(ALGNE_RAAM);
+        this.setFocusTraversable(tekst != null);
     }
 
 }

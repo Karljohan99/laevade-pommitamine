@@ -172,6 +172,7 @@ public class Mäng extends Pane {
             Label võit = new Label("Sa võitsid!");
             võit.setFont(new Font("Futura", 36));
             Mängunupp uuesti = new Mängunupp("Mängi uuesti!");
+            uuesti.setDefaultButton(true);
             uuesti.setOnAction(e -> this.getScene().setRoot(new Mäng()));
             if (Mäng.this.onKaotatud()) {
                 võit.setText("Sa kaotasid!");

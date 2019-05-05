@@ -10,16 +10,17 @@ import static java.util.stream.Collectors.joining;
 public class Mängulaev extends TilePane {
 
     public Mängulaev(int suurus) {
+        int suund = ThreadLocalRandom.current().nextBoolean() ? -1 : 1;
         int x = ThreadLocalRandom.current().nextInt(Mängulaud.SUURUS);
         int y = ThreadLocalRandom.current().nextInt(Mängulaud.SUURUS);
         if (ThreadLocalRandom.current().nextBoolean()) {
             // Horisontaalne
-            for (int i = 0; i < suurus; i++, x++) {
+            for (int i = 0; i < suurus; i++, x += suund) {
                 this.getChildren().add(new Mängupositsioon(x, y, Mängupositsioon.Sümbol.X, null));
             }
         } else {
             // Vertikaalne
-            for (int i = 0; i < suurus; i++, y++) {
+            for (int i = 0; i < suurus; i++, y += suund) {
                 this.getChildren().add(new Mängupositsioon(x, y, Mängupositsioon.Sümbol.X, null));
             }
         }
