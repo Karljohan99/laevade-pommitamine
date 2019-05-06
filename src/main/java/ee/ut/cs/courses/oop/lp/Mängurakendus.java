@@ -7,7 +7,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
+
+import static java.lang.Double.min;
 
 public class Mängurakendus extends Application {
 
@@ -17,10 +20,6 @@ public class Mängurakendus extends Application {
 
     @Override
     public void start(Stage pealava) {
-        pealava.setHeight(480); // TODO: akna suurus parajaks
-        pealava.setWidth(720);
-        pealava.setResizable(false);
-        pealava.setTitle("Laevade pommitamine");
         Label sissejuhatus = new Label("Tere tulemast mängima laevade pommitamist!\n" +
                 "Sinu ülesandeks on 60 pommiga põhja lasta kõik 10 laeva.\n" +
                 "Laevade vahel on vähemalt üks tühi ruut.");
@@ -32,8 +31,21 @@ public class Mängurakendus extends Application {
         paneel.setSpacing(50);
         Scene stseen = new Scene(paneel);
         startNupp.setOnAction(e -> stseen.setRoot(new Mäng()));
+        stseen.rootProperty().addListener((o, enne, pärast) -> suurenda(pealava));
+        pealava.heightProperty().addListener((o, enne, pärast) -> suurenda(pealava));
+        pealava.widthProperty().addListener((o, enne, pärast) -> suurenda(pealava));
+        pealava.setMinHeight(480);
+        pealava.setMinWidth(640);
         pealava.setScene(stseen);
+        pealava.setTitle("Laevade pommitamine");
         pealava.show();
+    }
+
+    private static void suurenda(Stage pealava) {
+        double scale = min(pealava.getHeight() / pealava.getMinHeight(),
+                pealava.getWidth() / pealava.getMinWidth());
+        pealava.getScene().getRoot().getTransforms().setAll(new Scale(scale, scale,
+                pealava.getWidth() / 2, pealava.getHeight() / 2));
     }
 
 }

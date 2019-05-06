@@ -4,8 +4,8 @@ import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
@@ -13,52 +13,38 @@ import java.util.List;
 import java.util.Scanner;
 
 import static ee.ut.cs.courses.oop.lp.Mängunupp.ALGNE_RAAM;
+import static ee.ut.cs.courses.oop.lp.Mängunupp.ALGNE_TAUST;
 
-public class Mäng extends Pane {
+public class Mäng extends GridPane {
 
     private final Mängulaud mängulaud = new Mängulaud();
 
     public Mäng() {
-
-
         VBox laevadePaneel = new VBox();
+        laevadePaneel.getChildren().addAll(this.getMängulaud().getLaevad());
+        laevadePaneel.setAlignment(Pos.CENTER);
         laevadePaneel.setSpacing(6);
-        Label pommid = new Label("Pomme alles: " + this.pommideArv());
-        pommid.setFont(new Font("Futura", 20));
-
-        for (Mängulaev laev : this.getMängulaud().getLaevad()) {
-            for (Mängupositsioon nupp : laev.getManagedChildren()) {
-                nupp.setPrefWidth(30);
-                nupp.setPrefHeight(30);
-            }
-            laevadePaneel.getChildren().add(laev);
-        }
-
-
+        Label pommideInfo = new Label("Pomme alles: " + this.pommideArv());
+        pommideInfo.setFont(new Font("Futura", 20));
         this.getMängulaud().getManagedChildren().forEach(nupp -> {
-            nupp.setPrefWidth(36);
-            nupp.setPrefHeight(36);
-
+            nupp.setMinHeight(36);
+            nupp.setMinWidth(36);
             nupp.setOnAction(e -> {
                 //this.getScene().setRoot(new Mängulõpp()); // testimiseks
                 if (!nupp.onHävitatud()) {
                     nupp.hävita();
-                    pommid.setText("Pomme alles: " + this.pommideArv());
+                    pommideInfo.setText("Pomme alles: " + this.pommideArv());
                     if (this.onLõppenud()) {
                         this.getScene().setRoot(new Mängulõpp());
                     }
                 }
             });
-
         });
-
-
-        this.getMängulaud().setLayoutX(60);
-        this.getMängulaud().setLayoutY(30);
-        laevadePaneel.setLayoutX(480);
-        laevadePaneel.setLayoutY(30);
-        pommid.setLayoutX(60);
-        this.getChildren().addAll(pommid, this.getMängulaud(), laevadePaneel);
+        this.add(pommideInfo, 0, 0);
+        this.add(this.getMängulaud(), 0, 1);
+        this.add(laevadePaneel, 1, 1);
+        this.setAlignment(Pos.CENTER);
+        this.setHgap(10);
     }
 
     public Mängulaud getMängulaud() {
@@ -164,36 +150,38 @@ public class Mäng extends Pane {
     }
 
     class Mängulõpp extends VBox {
+
         public Mängulõpp() {
             this.setSpacing(8);
-            this.setPrefWidth(720);
-            this.setPrefHeight(480);
             this.setAlignment(Pos.CENTER);
-            Label võit = new Label("Sa võitsid!");
-            võit.setFont(new Font("Futura", 36));
-            Mängunupp uuesti = new Mängunupp("Mängi uuesti!");
-            uuesti.setDefaultButton(true);
-            uuesti.setOnAction(e -> this.getScene().setRoot(new Mäng()));
+            Label teade = new Label();
+            teade.setFont(new Font("Futura", 36));
+            Mängunupp startNupp = new Mängunupp("Mängi uuesti");
+            startNupp.setDefaultButton(true);
+            startNupp.setOnAction(e -> this.getScene().setRoot(new Mäng()));
             if (Mäng.this.onKaotatud()) {
-                võit.setText("Sa kaotasid!");
-                this.getChildren().addAll(võit, uuesti);
+                teade.setText("Sa kaotasid!");
+                this.getChildren().addAll(teade, startNupp);
             } else {
-                Label skoor = new Label("Sinu skoor: " + skoor());
+                teade.setText("Sa võitsid!");
+                Label skoor = new Label("Sinu skoor: " + Mäng.this.skoor());
                 skoor.setFont(new Font("Futura", 24));
                 Edetabel edetabel = new Edetabel();
-                Mängunupp LisaNupp = new Mängunupp("OK!");
-                TextField tekst = new TextField();
-                tekst.setBorder(ALGNE_RAAM);
+                Mängunupp nimeNupp = new Mängunupp("OK");
+                TextField nimeVäli = new TextField();
+                nimeVäli.setBackground(ALGNE_TAUST);
+                nimeVäli.setBorder(ALGNE_RAAM);
                 Label nimi = new Label("Pane enda nimi edetabelisse: ");
                 nimi.setFont(new Font("Futura", 20));
-                HBox nimeväli = new HBox();
-                nimeväli.setSpacing(10);
-                nimeväli.setAlignment(Pos.CENTER);
-                nimeväli.getChildren().addAll(nimi, tekst, LisaNupp);
-                this.getChildren().addAll(võit, skoor, edetabel, nimeväli, uuesti);
+                HBox sisestusPaneel = new HBox();
+                sisestusPaneel.setSpacing(10);
+                sisestusPaneel.setAlignment(Pos.CENTER);
+                sisestusPaneel.getChildren().addAll(nimi, nimeVäli, nimeNupp);
+                this.getChildren().addAll(teade, skoor, edetabel, sisestusPaneel, startNupp);
             }
 
         }
+
     }
 
 }

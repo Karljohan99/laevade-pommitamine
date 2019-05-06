@@ -32,6 +32,8 @@ public class Mängunupp extends Button {
         this.setBackground(ALGNE_TAUST);
         this.setBorder(ALGNE_RAAM);
         this.setFocusTraversable(tekst != null);
+        this.setMinHeight(30);
+        this.setMinWidth(30);
     }
 
 }
