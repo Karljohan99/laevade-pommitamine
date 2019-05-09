@@ -157,11 +157,11 @@ public class Mäng extends GridPane {
             Label teade = new Label();
             teade.setFont(new Font("Futura", 36));
             Mängunupp startNupp = new Mängunupp("Mängi uuesti");
-            startNupp.setDefaultButton(true);
             startNupp.setOnAction(e -> this.getScene().setRoot(new Mäng()));
             if (Mäng.this.onKaotatud()) {
                 teade.setText("Sa kaotasid!");
                 this.getChildren().addAll(teade, startNupp);
+                startNupp.setDefaultButton(true);
             } else {
                 teade.setText("Sa võitsid!");
                 Label skoor = new Label("Sinu skoor: " + Mäng.this.skoor());
@@ -171,8 +171,16 @@ public class Mäng extends GridPane {
                 TextField nimeVäli = new TextField();
                 nimeVäli.setBackground(ALGNE_TAUST);
                 nimeVäli.setBorder(ALGNE_RAAM);
-                Label nimi = new Label("Pane enda nimi edetabelisse: ");
+                Label nimi = new Label("Pane enda nimi edetabelisse:");
                 nimi.setFont(new Font("Futura", 20));
+                nimeNupp.setOnAction(e -> {
+                    if (!nimeVäli.getText().isBlank()) {
+                        edetabel.lisa(new Mängija(nimeVäli.getText(), Mäng.this.skoor()));
+                        nimeNupp.setDisable(true);
+                        nimeVäli.setDisable(true);
+                        nimi.setDisable(true);
+                    }
+                });
                 HBox sisestusPaneel = new HBox();
                 sisestusPaneel.setSpacing(10);
                 sisestusPaneel.setAlignment(Pos.CENTER);

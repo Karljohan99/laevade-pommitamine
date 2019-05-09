@@ -1,38 +1,77 @@
 package ee.ut.cs.courses.oop.lp;
 
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.util.Map;
-import java.util.TreeMap;
+import java.io.*;
 
-public class Edetabel extends VBox {
+import static ee.ut.cs.courses.oop.lp.Mängunupp.ALGNE_TAUST;
+import static java.lang.System.lineSeparator;
+import static java.util.Comparator.naturalOrder;
+import static java.util.stream.Collectors.joining;
 
+public class Edetabel extends TableView<Mängija> {
 
-    private Map<Integer, String> skoorid = new TreeMap<>();
+    private static final String ANDMEFAILI_NIMI = "edetabel.bin";
 
     public Edetabel() {
-        this.setMaxWidth(360);
-        Label tekst = new Label("Edetabeli TOP10:");
-        tekst.setFont(new Font("Futura", 18));
-        HBox tekstikast = new HBox(tekst);
-        tekstikast.setAlignment(Pos.CENTER);
-        this.getChildren().add(tekstikast);
-        for (int i = 0; i < 10; i++) {
-            this.skoorid.put(100000 - 100 * i, "Test " + i);
+        this.setBackground(ALGNE_TAUST);
+        this.setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
+        this.setMaxSize(300, 200);
+        this.setPlaceholder(new Label());
+        TableColumn pealkiri = new TableColumn("Edetabel");
+        pealkiri.setReorderable(false);
+        this.getColumns().addAll(pealkiri);
+        TableColumn skooriVeerg = new TableColumn("Skoor");
+        skooriVeerg.setReorderable(false);
+        skooriVeerg.setSortable(false);
+        skooriVeerg.setCellValueFactory(new PropertyValueFactory<>("skoor"));
+        TableColumn nimeVeerg = new TableColumn("Nimi");
+        nimeVeerg.setReorderable(false);
+        nimeVeerg.setSortable(false);
+        nimeVeerg.setCellValueFactory(new PropertyValueFactory<>("nimi"));
+        pealkiri.getColumns().addAll(skooriVeerg, nimeVeerg);
+        try (DataInputStream dis = new DataInputStream(new FileInputStream(ANDMEFAILI_NIMI))) {
+            for (int mängijateArv = dis.readInt(); mängijateArv > 0; mängijateArv--) {
+                this.getItems().add(new Mängija(dis.readUTF(), dis.readInt()));
+            }
+        } catch (IOException e) {
+            // Eirame viga
         }
-        this.skoorid.forEach((s, n) -> {
-            Label nimi = new Label(n);
-            nimi.setFont(new Font("Futura", 14));
-            Label skoor = new Label(s.toString());
-            skoor.setFont(new Font("Futura", 14));
-            HBox kast = new HBox(nimi, skoor);
-            kast.setAlignment(Pos.CENTER);
-            this.getChildren().add(kast);
-        });
+    }
+
+    public void lisa(Mängija mängija) {
+        int indeks = this.getItems().indexOf(mängija);
+        if (indeks != -1) {
+            Mängija vana = this.getItems().get(indeks);
+            if (mängija.compareTo(vana) > 0) {
+                vana.setNimi(mängija.getNimi());
+                mängija = vana;
+            }
+            this.getItems().set(indeks, mängija);
+        } else {
+            this.getItems().add(mängija);
+        }
+        this.getItems().sort(naturalOrder());
+        indeks = this.getItems().indexOf(mängija);
+        this.getSelectionModel().clearAndSelect(indeks);
+        this.scrollTo(indeks);
+        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(ANDMEFAILI_NIMI))) {
+            dos.writeInt(this.getItems().size());
+            for (var m : this.getItems()) {
+                dos.writeUTF(m.getNimi());
+                dos.writeInt(m.getSkoor());
+            }
+        } catch (IOException e) {
+            // Eirame viga
+        }
+    }
+
+    @Override
+    public String toString() {
+        return this.getItems().stream().map(Mängija::toString).collect(joining(lineSeparator())) + lineSeparator();
     }
 
 }
