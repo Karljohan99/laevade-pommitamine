@@ -13,6 +13,7 @@ import static java.util.Objects.hash;
 
 public class Mängupositsioon extends Mängunupp implements Comparable<Mängupositsioon> {
 
+
     protected static final Border FOOKUSES_RAAM = new Border(new BorderStroke(Color.BLACK,
             BorderStrokeStyle.DASHED, CornerRadii.EMPTY, new BorderWidths(2, 2, 2, 2)));
 

@@ -1,7 +1,6 @@
 package ee.ut.cs.courses.oop.lp;
 
 import javafx.scene.layout.GridPane;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +48,10 @@ public class Mängulaud extends GridPane {
 
     public List<Mängulaev> getLaevad() {
         return this.laevad;
+    }
+
+    public int getSUURUS() {
+        return SUURUS;
     }
 
     public Mängupositsioon getPositsioon(int x, int y) {

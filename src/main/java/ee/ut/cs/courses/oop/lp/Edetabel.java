@@ -4,7 +4,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.io.*;
 
 import static ee.ut.cs.courses.oop.lp.Mängunupp.ALGNE_TAUST;
@@ -16,6 +15,9 @@ public class Edetabel extends TableView<Mängija> {
 
     private static final String ANDMEFAILI_NIMI = "edetabel.bin";
 
+    /**
+     * Meetod, mis loob edetabeli
+     */
     public Edetabel() {
         this.setBackground(ALGNE_TAUST);
         this.setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
@@ -42,6 +44,11 @@ public class Edetabel extends TableView<Mängija> {
         }
     }
 
+    /**
+     * Lisame mängija edetabelisse
+     *
+     * @param mängija Antud mängija, kes edetabelisse lisatakse
+     */
     public void lisa(Mängija mängija) {
         int indeks = this.getItems().indexOf(mängija);
         if (indeks != -1) {

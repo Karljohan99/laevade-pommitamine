@@ -1,14 +1,15 @@
 package ee.ut.cs.courses.oop.lp;
 
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-
+import javafx.util.Duration;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,23 +20,33 @@ public class Mäng extends GridPane {
 
     private final Mängulaud mängulaud = new Mängulaud();
 
+    /**
+     * Mängustseen
+     */
     public Mäng() {
+        FadeTransition ft = new FadeTransition(Duration.millis(3000), this);
+        ft.setFromValue(1.0);
+        ft.setToValue(0);
+        ft.setCycleCount(1);
+
+        this.setBackground(new Background(new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY)));
         VBox laevadePaneel = new VBox();
         laevadePaneel.getChildren().addAll(this.getMängulaud().getLaevad());
         laevadePaneel.setAlignment(Pos.CENTER);
         laevadePaneel.setSpacing(6);
         Label pommideInfo = new Label("Pomme alles: " + this.pommideArv());
-        pommideInfo.setFont(new Font("Futura", 20));
+        pommideInfo.setFont(new Font("Garamond", 20));
         this.getMängulaud().getManagedChildren().forEach(nupp -> {
             nupp.setMinHeight(36);
             nupp.setMinWidth(36);
             nupp.setOnAction(e -> {
                 //this.getScene().setRoot(new Mängulõpp()); // testimiseks
-                if (!nupp.onHävitatud()) {
+                if (!nupp.onHävitatud() && !this.onLõppenud()) {
                     nupp.hävita();
                     pommideInfo.setText("Pomme alles: " + this.pommideArv());
                     if (this.onLõppenud()) {
-                        this.getScene().setRoot(new Mängulõpp());
+                        ft.play();
+                        ft.setOnFinished(actionEvent -> lõpeta());
                     }
                 }
             });
@@ -52,6 +63,7 @@ public class Mäng extends GridPane {
     }
 
     public static void main(String[] args) {
+        //kui programmile antakse tekstiline argument, siis käivitatakse mäng konsoolis
         if (!List.of(args).contains("tekst")) {
             Mängurakendus.main(args);
             return;
@@ -142,6 +154,12 @@ public class Mäng extends GridPane {
         return (int) Math.round(Math.pow(2.5 * pommideArv(), 3));
     }
 
+    /**
+     * Paneb mängulõpustseeni
+     */
+    public void lõpeta() {
+        this.getScene().setRoot(new Mängulõpp());
+    }
 
     @Override
     public String toString() {
@@ -152,27 +170,35 @@ public class Mäng extends GridPane {
     class Mängulõpp extends VBox {
 
         public Mängulõpp() {
+            this.setBackground(new Background(new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY)));
             this.setSpacing(8);
             this.setAlignment(Pos.CENTER);
             Label teade = new Label();
-            teade.setFont(new Font("Futura", 36));
+            teade.setTextFill(Color.DARKCYAN);
+            teade.setFont(new Font("Garamond", 36));
+            teade.setBorder(new Border(new BorderStroke(Color.BLACK,
+                    BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+            teade.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
             Mängunupp startNupp = new Mängunupp("Mängi uuesti");
             startNupp.setOnAction(e -> this.getScene().setRoot(new Mäng()));
+
+            startNupp.setFont(new Font("Garamond", 24));
             if (Mäng.this.onKaotatud()) {
-                teade.setText("Sa kaotasid!");
+                teade.setText(" Sa kaotasid! ");
                 this.getChildren().addAll(teade, startNupp);
                 startNupp.setDefaultButton(true);
             } else {
-                teade.setText("Sa võitsid!");
+                teade.setText(" Sa võitsid! ");
                 Label skoor = new Label("Sinu skoor: " + Mäng.this.skoor());
-                skoor.setFont(new Font("Futura", 24));
+                skoor.setFont(new Font("Garamond", 24));
+                skoor.setTextFill(Color.ORANGERED);
                 Edetabel edetabel = new Edetabel();
                 Mängunupp nimeNupp = new Mängunupp("OK");
                 TextField nimeVäli = new TextField();
                 nimeVäli.setBackground(ALGNE_TAUST);
                 nimeVäli.setBorder(ALGNE_RAAM);
                 Label nimi = new Label("Pane enda nimi edetabelisse:");
-                nimi.setFont(new Font("Futura", 20));
+                nimi.setFont(new Font("Garamond", 20));
                 nimeNupp.setOnAction(e -> {
                     if (!nimeVäli.getText().isBlank()) {
                         edetabel.lisa(new Mängija(nimeVäli.getText(), Mäng.this.skoor()));

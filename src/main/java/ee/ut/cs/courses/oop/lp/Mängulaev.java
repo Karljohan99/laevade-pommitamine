@@ -9,6 +9,11 @@ import static java.util.stream.Collectors.joining;
 
 public class Mängulaev extends TilePane {
 
+    /**
+     * Loome mänulaeva
+     *
+     * @param suurus Loodava mängulaeva suurus
+     */
     public Mängulaev(int suurus) {
         int suund = ThreadLocalRandom.current().nextBoolean() ? -1 : 1;
         int x = ThreadLocalRandom.current().nextInt(Mängulaud.SUURUS);

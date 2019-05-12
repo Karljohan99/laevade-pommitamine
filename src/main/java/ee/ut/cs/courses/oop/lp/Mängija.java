@@ -13,6 +13,12 @@ public class Mängija implements Comparable<Mängija> {
     private final StringProperty nimi;
     private final IntegerProperty skoor;
 
+    /**
+     * Mängija konstruktor
+     *
+     * @param nimi  Mängija nimi
+     * @param skoor Mängija skoor
+     */
     public Mängija(String nimi, int skoor) {
         this.nimi = new SimpleStringProperty(this, "nimi", nimi);
         this.skoor = new SimpleIntegerProperty(this, "skoor", skoor);
