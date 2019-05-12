@@ -34,8 +34,6 @@ public class Mängurakendus extends Application {
         sissejuhatus.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         Mängunupp startNupp = new Mängunupp("Alusta");
         startNupp.setFont(new Font("Garamond", 24));
-        //startNupp.setPrefHeight(100);
-        //startNupp.setPrefWidth(100);
         VBox paneel = new VBox(sissejuhatus, startNupp);
         paneel.setBackground(new Background(new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY)));
         paneel.setAlignment(Pos.CENTER);

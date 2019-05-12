@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -24,7 +25,7 @@ public class Mäng extends GridPane {
      * Mängustseen
      */
     public Mäng() {
-        FadeTransition ft = new FadeTransition(Duration.millis(3000), this);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), this);
         ft.setFromValue(1.0);
         ft.setToValue(0);
         ft.setCycleCount(1);
@@ -45,6 +46,7 @@ public class Mäng extends GridPane {
                     nupp.hävita();
                     pommideInfo.setText("Pomme alles: " + this.pommideArv());
                     if (this.onLõppenud()) {
+                        this.setEffect(new GaussianBlur());
                         ft.play();
                         ft.setOnFinished(actionEvent -> lõpeta());
                     }
