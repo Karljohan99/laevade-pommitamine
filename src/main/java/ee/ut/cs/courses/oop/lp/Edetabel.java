@@ -16,7 +16,7 @@ public class Edetabel extends TableView<Mängija> {
     private static final String ANDMEFAILI_NIMI = "edetabel.bin";
 
     /**
-     * Meetod, mis loob edetabeli
+     * Konstruktor, mis loob edetabeli
      */
     public Edetabel() {
         this.setBackground(ALGNE_TAUST);

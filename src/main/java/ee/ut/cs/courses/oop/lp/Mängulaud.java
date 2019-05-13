@@ -50,10 +50,6 @@ public class Mängulaud extends GridPane {
         return this.laevad;
     }
 
-    public int getSUURUS() {
-        return SUURUS;
-    }
-
     public Mängupositsioon getPositsioon(int x, int y) {
         if (x < 0 || x >= Mängulaud.SUURUS || y < 0 || y >= Mängulaud.SUURUS) {
             throw new IllegalArgumentException("Sisestatud positsioon ei asu mängulaual!");

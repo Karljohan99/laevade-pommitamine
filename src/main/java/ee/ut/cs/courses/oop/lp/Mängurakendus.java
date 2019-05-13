@@ -29,8 +29,6 @@ public class Mängurakendus extends Application {
         sissejuhatus.setTextAlignment(TextAlignment.CENTER);
         sissejuhatus.setFont(new Font("Garamond", 24));
         sissejuhatus.setTextFill(Color.DARKCYAN);
-        sissejuhatus.setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         sissejuhatus.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         Mängunupp startNupp = new Mängunupp("Alusta");
         startNupp.setFont(new Font("Garamond", 24));

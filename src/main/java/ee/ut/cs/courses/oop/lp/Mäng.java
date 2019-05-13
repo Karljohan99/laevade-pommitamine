@@ -177,23 +177,24 @@ public class Mäng extends GridPane {
             this.setAlignment(Pos.CENTER);
             Label teade = new Label();
             teade.setTextFill(Color.DARKCYAN);
-            teade.setFont(new Font("Garamond", 36));
-            teade.setBorder(new Border(new BorderStroke(Color.BLACK,
-                    BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+            teade.setStyle("-fx-font-weight: bold;");
             teade.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
             Mängunupp startNupp = new Mängunupp("Mängi uuesti");
             startNupp.setOnAction(e -> this.getScene().setRoot(new Mäng()));
 
             startNupp.setFont(new Font("Garamond", 24));
             if (Mäng.this.onKaotatud()) {
+                teade.setFont(new Font("Garamond", 56));
                 teade.setText(" Sa kaotasid! ");
                 this.getChildren().addAll(teade, startNupp);
                 startNupp.setDefaultButton(true);
             } else {
                 teade.setText(" Sa võitsid! ");
+                teade.setFont(new Font("Garamond", 40));
                 Label skoor = new Label("Sinu skoor: " + Mäng.this.skoor());
                 skoor.setFont(new Font("Garamond", 24));
                 skoor.setTextFill(Color.ORANGERED);
+                skoor.setStyle("-fx-font-weight: bold;");
                 Edetabel edetabel = new Edetabel();
                 Mängunupp nimeNupp = new Mängunupp("OK");
                 TextField nimeVäli = new TextField();

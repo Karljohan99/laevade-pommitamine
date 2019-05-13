@@ -10,7 +10,7 @@ import static java.util.stream.Collectors.joining;
 public class Mängulaev extends TilePane {
 
     /**
-     * Loome mänulaeva
+     * Loome mängulaeva
      *
      * @param suurus Loodava mängulaeva suurus
      */

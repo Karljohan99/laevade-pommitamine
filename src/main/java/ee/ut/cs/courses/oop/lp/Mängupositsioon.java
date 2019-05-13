@@ -132,7 +132,7 @@ public class Mängupositsioon extends Mängunupp implements Comparable<Mängupos
     public enum Sümbol {
 
         X("X", new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY))),
-        O("o", new Background(new BackgroundFill(Color.BLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+        O("o", new Background(new BackgroundFill(Color.DODGERBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
 
         private final String sümbol;
         private final Background taust;
