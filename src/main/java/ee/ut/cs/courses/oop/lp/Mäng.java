@@ -11,7 +11,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import static ee.ut.cs.courses.oop.lp.Mängunupp.ALGNE_RAAM;
@@ -48,7 +50,7 @@ public class Mäng extends GridPane {
                     if (this.onLõppenud()) {
                         this.setEffect(new GaussianBlur());
                         ft.play();
-                        ft.setOnFinished(actionEvent -> lõpeta());
+                        ft.setOnFinished(ae -> this.getScene().setRoot(new Mängulõpp()));
                     }
                 }
             });
@@ -107,6 +109,8 @@ public class Mäng extends GridPane {
                         } catch (IndexOutOfBoundsException erind) {
                             System.out.println("Sisesta mängulaua koordinaat, näiteks C4");
                             continue;
+                        } catch (NoSuchElementException erind) {
+                            System.exit(0);
                         }
                         break;
                     }
@@ -154,13 +158,6 @@ public class Mäng extends GridPane {
 
     public int skoor() {
         return (int) Math.round(Math.pow(2.5 * pommideArv(), 3));
-    }
-
-    /**
-     * Paneb mängulõpustseeni
-     */
-    public void lõpeta() {
-        this.getScene().setRoot(new Mängulõpp());
     }
 
     @Override

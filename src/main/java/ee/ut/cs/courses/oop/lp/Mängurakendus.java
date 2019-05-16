@@ -5,7 +5,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -38,12 +41,12 @@ public class Mängurakendus extends Application {
         paneel.setSpacing(50);
         Scene stseen = new Scene(paneel);
         startNupp.setOnAction(e -> stseen.setRoot(new Mäng()));
+        pealava.setScene(stseen);
+        pealava.setMinHeight(480);
+        pealava.setMinWidth(640);
         stseen.rootProperty().addListener((o, enne, pärast) -> suurenda(pealava));
         pealava.heightProperty().addListener((o, enne, pärast) -> suurenda(pealava));
         pealava.widthProperty().addListener((o, enne, pärast) -> suurenda(pealava));
-        pealava.setMinHeight(480);
-        pealava.setMinWidth(640);
-        pealava.setScene(stseen);
         pealava.setTitle("Laevade pommitamine");
         pealava.show();
     }
@@ -54,9 +57,9 @@ public class Mängurakendus extends Application {
      * @param pealava Antud pealava
      */
     private static void suurenda(Stage pealava) {
-        double scale = min(pealava.getHeight() / pealava.getMinHeight(),
+        double skaala = min(pealava.getHeight() / pealava.getMinHeight(),
                 pealava.getWidth() / pealava.getMinWidth());
-        pealava.getScene().getRoot().getTransforms().setAll(new Scale(scale, scale,
+        pealava.getScene().getRoot().getTransforms().setAll(new Scale(skaala, skaala,
                 pealava.getWidth() / 2, pealava.getHeight() / 2));
     }
 

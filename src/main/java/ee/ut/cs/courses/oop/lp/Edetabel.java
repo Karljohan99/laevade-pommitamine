@@ -4,6 +4,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+
 import java.io.*;
 
 import static ee.ut.cs.courses.oop.lp.Mängunupp.ALGNE_TAUST;
@@ -13,7 +14,7 @@ import static java.util.stream.Collectors.joining;
 
 public class Edetabel extends TableView<Mängija> {
 
-    private static final String ANDMEFAILI_NIMI = "edetabel.bin";
+    private static final String ANDMEFAILI_NIMI = ".edetabel";
 
     /**
      * Konstruktor, mis loob edetabeli

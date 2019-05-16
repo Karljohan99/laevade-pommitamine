@@ -1,4 +1,5 @@
 package ee.ut.cs.courses.oop.lp;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;

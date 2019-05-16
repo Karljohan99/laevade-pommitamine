@@ -1,6 +1,7 @@
 package ee.ut.cs.courses.oop.lp;
 
 import javafx.scene.layout.GridPane;
+
 import java.util.ArrayList;
 import java.util.List;
 
