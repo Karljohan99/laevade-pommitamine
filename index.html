@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="et">
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300i" rel="stylesheet">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            @keyframes scale1 {
+                from {
+                    transform: scale(0);
+                }
+                to   {
+                    transform: scale(1);
+                }
+            }
+            @keyframes scale2 {
+                0% {
+                    transform: scale(0);
+                }
+                10%, 100%   {
+                    transform: scale(1);
+                }
+                55% {
+                    transform: scale(2);
+                }
+            }
+            .scale1 {
+                animation-duration: 0.2s;
+                animation-fill-mode: both;
+                animation-timing-function: linear;
+                animation-name: scale1;
+                animation-delay: 6s;
+            }
+            .scale2 {
+                animation-duration: 5s;
+                animation-fill-mode: both;
+                animation-timing-function: ease-out;
+                animation-name: scale2;
+                animation-delay: 1s;
+            }
+            #filter, #logo {
+                background: black;
+            }
+            #filter, #logo, #overlay {
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+            #filter, #logo {
+                color: white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+            #message {
+                font-family: 'Roboto', sans-serif;
+                text-align: center;
+            }
+            body, #filter, html, #logo, #overlay, #player {
+                border: 0;
+                height: 100%;
+                margin: 0;
+                overflow: hidden;
+                padding: 0;
+                width: 100%;
+            }
+            button {
+                border: 0;
+                font-family: 'Roboto', sans-serif;
+                font-size: 24px;
+                padding: 5px 30px;
+            }
+            h1{
+                margin: 50px;
+            }
+            p {
+                padding: 20px;
+            }
+            [hidden]{
+                display: none !important;
+            }
+        </style>
+        <title>Laevade pommitamine</title>
+    </head>
+    <body>
+        <div id="player"></div>
+        <div id="overlay"></div>
+        <div id="logo">
+            <div>
+                <h1 id="title">Laevade<br>pommitamine</h1>
+                <button id="end">Sisene</button>
+            </div>
+        </div>
+        <div id="filter">
+            <div id="message">
+                <p>Kuna meie mäng on sõjateemaline pole see sobiv kõigile vanusegruppidele.</p>
+                <button id="start">Vaata trailerit</button>
+            </div>
+        </div>
+        <script>
+
+            var logo = document.getElementById("logo");
+            logo.hidden = true;
+            var player;
+            var active = false;
+
+            document.getElementById("start").onclick = function () {
+                var tag = document.createElement("script");
+                tag.src = "https://www.youtube.com/iframe_api";
+                var firstScriptTag = document.getElementsByTagName("script")[0];
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                if (document.body.requestFullscreen) {
+                    document.body.requestFullscreen();
+                }
+            };
+            document.getElementById("end").onclick = function () {
+                window.location = "index.htm";
+
+            };
+            function onYouTubeIframeAPIReady() {
+                player = new YT.Player("player", {
+                    videoId: "ipODvsI1sCk",
+                    playerVars: {
+                        autoplay: 1,
+                        controls: 0,
+                        disablekb: 1,
+                        enablejsapi: 1,
+                        modestbranding: 1,
+                        start: 15
+                    },
+                    events: {
+                        onReady: onPlayerReady,
+                        onStateChange: onPlayerStateChange
+                    }
+                });
+                document.getElementById("message").hidden = true;
+            }
+
+            function onPlayerReady(event) {
+                event.target.setVolume(100);
+            }
+
+            function onPlayerStateChange(event) {
+                if (event.data === YT.PlayerState.PLAYING && !active) {
+                    window.setTimeout(function () {
+                        document.getElementById("filter").hidden = true;
+                    }, 5000);
+                    window.setTimeout(function () {
+                        logo.hidden = false;
+                        document.getElementById("title").classList.add("scale2");
+                        document.getElementById("end").classList.add("scale1");
+                    }, 100000);
+                    window.setTimeout(function () {
+                        if (document.exitFullscreen && document.fullscreenElement !== null) {
+                            document.exitFullscreen();
+                        }
+                    }, 107000);
+                    active = true;
+                }
+            }
+
+        </script>
+    </body>
+</html>
