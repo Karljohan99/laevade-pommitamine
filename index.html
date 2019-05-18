@@ -1,165 +1,102 @@
 <!DOCTYPE html>
 <html lang="et">
     <head>
-        <link href="https://fonts.googleapis.com/css?family=Roboto:300i" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lobster|Roboto+Condensed&display=swap" rel="stylesheet">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
-            @keyframes scale1 {
-                from {
-                    transform: scale(0);
-                }
-                to   {
-                    transform: scale(1);
-                }
-            }
-            @keyframes scale2 {
+            @keyframes swap {
                 0% {
-                    transform: scale(0);
+                    content: "Lahinguks valmis?";
                 }
-                10%, 100%   {
-                    transform: scale(1);
+                50% {
+                    content: "Uudne graafiline kasutajaliides";
                 }
-                55% {
-                    transform: scale(2);
+                100% {
+                    content: "Moodne kujundus";
                 }
             }
-            .scale1 {
-                animation-duration: 0.2s;
-                animation-fill-mode: both;
-                animation-timing-function: linear;
-                animation-name: scale1;
-                animation-delay: 6s;
+            a:link, a:visited {
+                background-color: white;
+                border: 1px solid black;
+                box-shadow: 0 0 1em rgba(0,0,0,0.5);
+                color: black;
+                display: inline-block;
+                font-size: 20px;
+                font-weight: 400;
+                padding: 20px 30px;
+                text-decoration: none;
+                text-transform: uppercase;
+                text-shadow: 0 -1px 2px rgba(0,0,0,0.4);
             }
-            .scale2 {
-                animation-duration: 5s;
-                animation-fill-mode: both;
-                animation-timing-function: ease-out;
-                animation-name: scale2;
-                animation-delay: 1s;
+            a:hover {
+                background-color: #e0ffff;
             }
-            #filter, #logo {
-                background: black;
+            a:active {
+                background-color: #008b8b;
             }
-            #filter, #logo, #overlay {
-                position: absolute;
-                right: 0;
-                top: 0;
-            }
-            #filter, #logo {
+            body, div, html {
                 color: white;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-            }
-            #message {
-                font-family: 'Roboto', sans-serif;
-                text-align: center;
-            }
-            body, #filter, html, #logo, #overlay, #player {
-                border: 0;
+                font-family: 'Roboto Condensed', sans-serif;
                 height: 100%;
                 margin: 0;
                 overflow: hidden;
                 padding: 0;
                 width: 100%;
             }
-            button {
-                border: 0;
-                font-family: 'Roboto', sans-serif;
-                font-size: 24px;
-                padding: 5px 30px;
+            div {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                position: absolute;
+                right: 0;
+                top: 0;
             }
             h1{
+                color: #008b8b;
+                font-family: 'Lobster', cursive;
+                font-size: 50px;
+                font-weight: 400;
                 margin: 50px;
+                text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
             }
             p {
-                padding: 20px;
+                font-size: 35px;
+                font-weight: 500;
+                line-height: 48px;
+                margin: 22px;
+                text-shadow: 0 0 0.25em rgba(0,0,0,0.7);
             }
-            [hidden]{
-                display: none !important;
+            p:after {
+                animation: swap 10s linear infinite alternate;
+                content: "";
+            }
+            svg {
+                height: 24px;
+                margin-right: 8px;
+                vertical-align: bottom;
+                width: 24px;
             }
         </style>
         <title>Laevade pommitamine</title>
     </head>
     <body>
-        <div id="player"></div>
-        <div id="overlay"></div>
-        <div id="logo">
-            <div>
+        <video src="poster.webm" poster="poster.jpg" muted autoplay loop></video>
+        <div>
+            <section>
                 <h1 id="title">Laevade<br>pommitamine</h1>
-                <button id="end">Sisene</button>
-            </div>
+                <p></p>
+                <a href="">
+                    <svg viewBox="0 0 100 100">
+                    <path d="M89.4,30.6c0,5.7,0,11.5,0,17.2c0,1.1,0,1.1-1.1,1.1c-9.1,0-18.3,0-27.4,0c-5.2,0-10.3,0.1-15.5,0.1c-1.1,0-1.1,0-1.1-1.1c0-9.5,0-19.1,0-28.6c0-1.1,0-1.1,1.2-1.3c6.4-0.9,12.7-1.8,19.1-2.7c8-1.1,16-2.2,24-3.3c0.8-0.1,0.9,0,0.9,0.9C89.4,18.9,89.4,24.7,89.4,30.6z"/>
+                    <path d="M89.4,69.6c0,5.5,0,11,0,16.5c0,1.3-0.1,1.4-1.4,1.2c-6.3-0.9-12.6-1.7-18.9-2.6c-4.9-0.7-9.9-1.4-14.8-2.1c-3.1-0.4-6.1-0.9-9.2-1.2c-0.7-0.1-0.9-0.4-0.9-1.1c0-9.3,0-18.6,0-27.8c0-0.7,0.2-0.9,0.9-0.9c3.3,0,6.6,0,9.9,0c6.1,0,12.2,0.1,18.3,0.1c5,0,10.1,0.1,15.1,0.1c0.7,0,0.9,0.3,0.9,1C89.4,58.4,89.4,64,89.4,69.6z"/>
+                    <path d="M25.7,49.1c-4.9,0-9.8,0-14.7,0c-1,0-1.1,0-1.1-1.1c0-8,0-16,0-24c0-1.1,0-1.1,1.1-1.2c5.3-0.7,10.6-1.4,15.9-2.2c4.1-0.6,8.2-1.1,12.3-1.7c0.3,0,0.6-0.1,0.9-0.1c1.9-0.3,1.5-0.2,1.5,1.4c0,9.2,0,18.5,0,27.7c0,1.2,0,1.2-1.2,1.2C35.4,49.1,30.6,49.1,25.7,49.1L25.7,49.1z"/>
+                    <path d="M41.5,66.2c0,4.5,0,9.1,0,13.6c0,1,0,1-1,0.9c-5.2-0.7-10.4-1.5-15.6-2.2c-4.6-0.6-9.2-1.3-13.9-1.9c-1.1-0.1-1.1-0.2-1.1-1.3c0-7.7,0-15.4,0-23c0-1.1,0-1.1,1.2-1.1c8,0,16,0.1,23.9,0.2c1.9,0,3.8,0.1,5.6,0.1c0.7,0,0.9,0.3,0.9,0.9C41.5,57,41.5,61.6,41.5,66.2z"/>
+                    </svg>
+                    <span>Lae mäng alla</span>
+                </a>
+            </section>
         </div>
-        <div id="filter">
-            <div id="message">
-                <p>Kuna meie mäng on sõjateemaline pole see sobiv kõigile vanusegruppidele.</p>
-                <button id="start">Vaata trailerit</button>
-            </div>
-        </div>
-        <script>
-
-            var logo = document.getElementById("logo");
-            logo.hidden = true;
-            var player;
-            var active = false;
-
-            document.getElementById("start").onclick = function () {
-                var tag = document.createElement("script");
-                tag.src = "https://www.youtube.com/iframe_api";
-                var firstScriptTag = document.getElementsByTagName("script")[0];
-                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-                if (document.body.requestFullscreen) {
-                    document.body.requestFullscreen();
-                }
-            };
-            document.getElementById("end").onclick = function () {
-                window.location = "index.htm";
-
-            };
-            function onYouTubeIframeAPIReady() {
-                player = new YT.Player("player", {
-                    videoId: "ipODvsI1sCk",
-                    playerVars: {
-                        autoplay: 1,
-                        controls: 0,
-                        disablekb: 1,
-                        enablejsapi: 1,
-                        modestbranding: 1,
-                        start: 15
-                    },
-                    events: {
-                        onReady: onPlayerReady,
-                        onStateChange: onPlayerStateChange
-                    }
-                });
-                document.getElementById("message").hidden = true;
-            }
-
-            function onPlayerReady(event) {
-                event.target.setVolume(100);
-            }
-
-            function onPlayerStateChange(event) {
-                if (event.data === YT.PlayerState.PLAYING && !active) {
-                    window.setTimeout(function () {
-                        document.getElementById("filter").hidden = true;
-                    }, 5000);
-                    window.setTimeout(function () {
-                        logo.hidden = false;
-                        document.getElementById("title").classList.add("scale2");
-                        document.getElementById("end").classList.add("scale1");
-                    }, 100000);
-                    window.setTimeout(function () {
-                        if (document.exitFullscreen && document.fullscreenElement !== null) {
-                            document.exitFullscreen();
-                        }
-                    }, 107000);
-                    active = true;
-                }
-            }
-
-        </script>
     </body>
 </html>
