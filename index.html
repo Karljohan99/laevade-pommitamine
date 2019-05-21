@@ -9,12 +9,31 @@
                 0% {
                     content: "Lahinguks valmis?";
                 }
+                25% {
+                    content: "Ära jäta vastasele mingit lootust!";
+                }
                 50% {
-                    content: "Uudne graafiline kasutajaliides";
+                    content: "Võida lahing kõrgeima skooriga!";
                 }
                 100% {
-                    content: "Moodne kujundus";
+                    content: "Lae alla tasuta mäng nüüd!";
                 }
+            }
+            #content {
+                backface-visibility: hidden;
+                background: linear-gradient(transparent, rgba(16,32,49,0.4), rgba(16,32,49,0.8), #102031 10vh);
+                padding: 10vh 0;
+            }
+            #overlay {
+                align-items: center;
+                display: flex;
+                justify-content: center;
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+            #header {
+                height: 100vh;
             }
             a:link, a:visited {
                 background-color: white;
@@ -35,42 +54,60 @@
             a:active {
                 background-color: #008b8b;
             }
-            body, div, html {
-                color: white;
+            body {
+                background-color: #102031;
+                color: #eeeeee;
                 font-family: 'Roboto Condensed', sans-serif;
+                text-align: center;
+            }
+            body, html, #overlay {
                 height: 100%;
                 margin: 0;
-                overflow: hidden;
                 padding: 0;
                 width: 100%;
-            }
-            div {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-                position: absolute;
-                right: 0;
-                top: 0;
             }
             h1{
                 color: #008b8b;
                 font-family: 'Lobster', cursive;
-                font-size: 50px;
+                font-size: 50px;    
                 font-weight: 400;
                 margin: 50px;
-                text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
+                text-shadow: -1px -1px 1px white, 1px 1px 1px black;
             }
-            p {
+            h2 {
+                font-size: 36px;
+                line-height: 43px;
+                margin-bottom: 25px;
+                text-transform: uppercase;
+            }
+            header {
                 font-size: 35px;
                 font-weight: 500;
                 line-height: 48px;
                 margin: 22px;
+                min-height: 242px;
                 text-shadow: 0 0 0.25em rgba(0,0,0,0.7);
             }
-            p:after {
-                animation: swap 10s linear infinite alternate;
+            header:after {
+                animation: swap 57s linear infinite;
                 content: "";
+            }
+            hr {
+                border-bottom: 1px solid hsla(0,0,100,0.35);
+                border-top: 1px solid rgba(0,0,0,0.8);
+                margin: 40px 0;
+                opacity: 0.3;
+            }
+            img {
+                object-fit: contain;
+                max-width: 100%
+            }
+            p {
+                font-size: 20px;
+                line-height: 1.5em;
+                margin: 0 auto;
+                padding: 11px;
+                max-width: 640px;
             }
             svg {
                 height: 24px;
@@ -78,25 +115,51 @@
                 vertical-align: bottom;
                 width: 24px;
             }
+            video {
+                height: 110vh;
+                margin-bottom: -10vh;
+                object-fit: cover;
+                width: 100%;
+            }
         </style>
         <title>Laevade pommitamine</title>
     </head>
     <body>
-        <video src="poster.webm" poster="poster.jpg" muted autoplay loop></video>
-        <div>
-            <section>
-                <h1 id="title">Laevade<br>pommitamine</h1>
-                <p></p>
-                <a href="">
-                    <svg viewBox="0 0 100 100">
-                    <path d="M89.4,30.6c0,5.7,0,11.5,0,17.2c0,1.1,0,1.1-1.1,1.1c-9.1,0-18.3,0-27.4,0c-5.2,0-10.3,0.1-15.5,0.1c-1.1,0-1.1,0-1.1-1.1c0-9.5,0-19.1,0-28.6c0-1.1,0-1.1,1.2-1.3c6.4-0.9,12.7-1.8,19.1-2.7c8-1.1,16-2.2,24-3.3c0.8-0.1,0.9,0,0.9,0.9C89.4,18.9,89.4,24.7,89.4,30.6z"/>
-                    <path d="M89.4,69.6c0,5.5,0,11,0,16.5c0,1.3-0.1,1.4-1.4,1.2c-6.3-0.9-12.6-1.7-18.9-2.6c-4.9-0.7-9.9-1.4-14.8-2.1c-3.1-0.4-6.1-0.9-9.2-1.2c-0.7-0.1-0.9-0.4-0.9-1.1c0-9.3,0-18.6,0-27.8c0-0.7,0.2-0.9,0.9-0.9c3.3,0,6.6,0,9.9,0c6.1,0,12.2,0.1,18.3,0.1c5,0,10.1,0.1,15.1,0.1c0.7,0,0.9,0.3,0.9,1C89.4,58.4,89.4,64,89.4,69.6z"/>
-                    <path d="M25.7,49.1c-4.9,0-9.8,0-14.7,0c-1,0-1.1,0-1.1-1.1c0-8,0-16,0-24c0-1.1,0-1.1,1.1-1.2c5.3-0.7,10.6-1.4,15.9-2.2c4.1-0.6,8.2-1.1,12.3-1.7c0.3,0,0.6-0.1,0.9-0.1c1.9-0.3,1.5-0.2,1.5,1.4c0,9.2,0,18.5,0,27.7c0,1.2,0,1.2-1.2,1.2C35.4,49.1,30.6,49.1,25.7,49.1L25.7,49.1z"/>
-                    <path d="M41.5,66.2c0,4.5,0,9.1,0,13.6c0,1,0,1-1,0.9c-5.2-0.7-10.4-1.5-15.6-2.2c-4.6-0.6-9.2-1.3-13.9-1.9c-1.1-0.1-1.1-0.2-1.1-1.3c0-7.7,0-15.4,0-23c0-1.1,0-1.1,1.2-1.1c8,0,16,0.1,23.9,0.2c1.9,0,3.8,0.1,5.6,0.1c0.7,0,0.9,0.3,0.9,0.9C41.5,57,41.5,61.6,41.5,66.2z"/>
-                    </svg>
-                    <span>Lae mäng alla</span>
-                </a>
-            </section>
+        <div id="header">
+            <video src="videos/poster.webm" poster="images/poster.jpg" oncontextmenu="return false;" muted autoplay loop></video>
+            <div id="overlay">
+                <section>
+                    <header>
+                        <h1>Laevade<br>pommitamine</h1>
+                    </header>
+                    <a href="https://github.com/Karljohan99/laevade-pommitamine/releases/download/1.0/laevade-pommitamine.exe">
+                        <svg viewBox="0 0 448 512">
+                        <path d="M0 93.7l183.6-25.3v177.4H0V93.7zm0 324.6l183.6 25.3V268.4H0v149.9zm203.8 28L448 480V268.4H203.8v177.9zm0-380.6v180.1H448V32L203.8 65.7z"></path>
+                        </svg>
+                        <span>Lae mäng alla</span>
+                    </a>
+                </section>
+            </div>
+        </div>
+        <div id="content">
+            <h2>Lihtne kasutajaliides</h2>
+            <p>Ei mingit üleliigset graafikat! Mäng on kergesti arusaadav. Mängulaua kõrval näed ka vastase laevu, et näha, kas ja millal oled laeva põhja lasknud. Laevade pommitamiseks võid kasutada nii hiirt kui ka klaviatuuri. Kasutajaliidese suurus on muudetav. Alusta mängimist nüüd!</p>
+            <img src="images/screenshot1.png" alt="">
+            <hr>
+            <h2>Lase põhja kõik vastase laevad</h2>
+            <p>Mängulauale genereeritakse juhuslikult 10 erinevas suuruses laevu. Proovi need kõik põhja lasta, kuid ole hoolikas – sul on kasutada vaid 60 pommi. Kui mängulaua ruut muutub punaseks, siis tabasid vastase laeva. Sinine ruut tähistab möödalasku. Sind aitab teadmine, et laevade vahel peab alati olema üks tühi ruut. Ära jäta vastasele mingit võimalust!</p>
+            <img src="images/screenshot2.png" alt="">
+            <hr>
+            <h2>Proovi saada parimaks</h2>
+            <p>Kui oled mängu võitnud, siis näed oma punktiskoori. Mida vähem pomme kasutasid, seda kõrgem on skoor. Soovi korral võid lisada oma nime edetabelisse, et enda skoori teistega võrrelda. Kui saad hiljem kõrgema skoori, siis saad selle oma nime edetabelisse uuesti pannes vana skoori üle kirjutada. Kas sa suudad saada skooriks 1 000 000?</p>
+            <img src="images/screenshot3.png" alt="">
+            <hr>
+            <a href="https://github.com/Karljohan99/laevade-pommitamine/releases/download/1.0/laevade-pommitamine.exe">
+                <svg viewBox="0 0 448 512">
+                <path d="M0 93.7l183.6-25.3v177.4H0V93.7zm0 324.6l183.6 25.3V268.4H0v149.9zm203.8 28L448 480V268.4H203.8v177.9zm0-380.6v180.1H448V32L203.8 65.7z"></path>
+                </svg>
+                <span>Lae mäng alla</span>
+            </a>
         </div>
     </body>
 </html>
